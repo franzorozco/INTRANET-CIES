@@ -1,0 +1,38 @@
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@fluentui/react-components';
+import { HomeRegular, ShieldKeyholeRegular } from '@fluentui/react-icons';
+import { INTRANET_ADMIN_ROLE } from '../../constants/roles';
+
+interface ISidebarProps {
+  roles: string[];
+}
+
+export const Sidebar: React.FC<ISidebarProps> = ({ roles }) => {
+  const isAdmin = roles.indexOf(INTRANET_ADMIN_ROLE) !== -1;
+
+  return (
+    <aside style={{
+      width: '240px',
+      borderRight: '1px solid #edebe9',
+      padding: '16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+      backgroundColor: '#faf9f8'
+    }}>
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <Button icon={<HomeRegular />} appearance="subtle" style={{ width: '100%', justifyContent: 'flex-start' }}>
+          Inicio
+        </Button>
+      </Link>
+      {isAdmin && (
+        <Link to="/admin" style={{ textDecoration: 'none' }}>
+          <Button icon={<ShieldKeyholeRegular />} appearance="subtle" style={{ width: '100%', justifyContent: 'flex-start' }}>
+            Administración
+          </Button>
+        </Link>
+      )}
+    </aside>
+  );
+};

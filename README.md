@@ -1,77 +1,78 @@
-# intranet
+# Intranet CIES
 
-## Summary
+Solución de SharePoint Framework (SPFx) para la intranet CIES. El Web Part aloja una aplicación React con navegación interna, vistas y consulta de grupos de SharePoint mediante PnPjs.
 
-Short summary on functionality and used technologies.
+## Requisitos para el equipo
 
-[picture of the solution in action, if possible]
+- Node.js **22.x** (se recomienda **22.15.0**, la versión usada al crear la solución).
+- npm, incluido con Node.js.
+- Git para clonar el repositorio.
+- Acceso a un tenant de SharePoint Online con permisos para usar el SharePoint Workbench y probar Web Parts.
+- Un navegador moderno.
 
-## Used SharePoint Framework Version
+No es necesario instalar Heft ni las librerías del proyecto globalmente: npm las instala desde `package.json` y `package-lock.json`.
 
-![version](https://img.shields.io/badge/version-1.23.2-green.svg)
+## Preparar el proyecto
 
-## Applies to
+1. Clonar el repositorio y entrar a la carpeta del proyecto:
 
-- [SharePoint Framework](https://aka.ms/spfx)
-- [Microsoft 365 tenant](https://docs.microsoft.com/sharepoint/dev/spfx/set-up-your-developer-tenant)
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd INTRANET-CIES
+   ```
 
-> Get your own free development tenant by subscribing to [Microsoft 365 developer program](http://aka.ms/o365devprogram)
+2. Instalar las dependencias declaradas y bloqueadas por el proyecto:
 
-## Prerequisites
+   ```bash
+   npm ci
+   ```
 
-> Any special pre-requisites?
+   Si se modifica `package.json` y se actualiza el archivo de bloqueo, usar `npm install` para actualizar las dependencias.
 
-## Solution
+3. Configurar el tenant en `config/serve.json`: reemplazar `{tenantDomain}` en `initialPage` por el dominio del tenant que usarán para las pruebas. No se deben guardar contraseñas, tokens ni secretos en ese archivo.
 
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+## Desarrollo y compilación
 
-## Version history
+Iniciar el servidor de desarrollo:
 
-| Version | Date             | Comments        |
-| ------- | ---------------- | --------------- |
-| 1.1     | March 10, 2021   | Update comment  |
-| 1.0     | January 29, 2021 | Initial release |
+```bash
+npm run start
+```
 
-## Disclaimer
+Para compilar, ejecutar las validaciones del proyecto y empaquetar la solución:
 
-**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+```bash
+npm run build
+```
 
----
+El paquete de SharePoint se genera en `sharepoint/solution/intranet.sppkg`. El comando `npm run clean` limpia los artefactos de compilación.
 
-## Minimal Path to Awesome
+## Librerías principales
 
-- Clone this repository
-- Ensure that you are at the solution folder
-- in the command-line run:
-  - `npm install -g @rushstack/heft`
-  - `npm install`
-  - `heft start`
+Estas dependencias se instalan automáticamente con `npm ci`; no hace falta ejecutar comandos `npm install <paquete>` por cada una:
 
-> Include any additional steps as needed.
+- **SPFx 1.23.2** (`@microsoft/sp-*`): integración con SharePoint y ciclo de vida del Web Part.
+- **React 17** y **React DOM**: interfaz de usuario.
+- **Fluent UI React v9**, **Fluent UI React v8** y **Fluent UI Icons**: componentes, estilos e iconos.
+- **React Router v6**: navegación entre vistas de la aplicación.
+- **PnPjs v4** (`@pnp/sp`, `@pnp/logging`): acceso a SharePoint.
+- **TypeScript 5.8**, **Heft** y herramientas SPFx: compilación, lint y empaquetado.
 
-Other build commands can be listed using `heft --help`.
+Las versiones exactas y el resto de dependencias están declaradas en `package.json`; `package-lock.json` permite que todos instalen el mismo árbol de paquetes con `npm ci`.
 
-## Features
+## Estructura del código
 
-Description of the extension that expands upon high-level summary above.
+```text
+src/
+├── components/
+│   ├── layout/       # Navegación y estructura compartida
+│   ├── shared/       # Componentes reutilizables, como la protección de rutas
+│   └── views/        # Páginas de la aplicación
+├── constants/        # Valores compartidos, como el grupo de administración
+├── services/         # Acceso a SharePoint con PnPjs
+└── webparts/         # Punto de entrada SPFx
+```
 
-This extension illustrates the following concepts:
+Las rutas y el layout principal se definen en `src/components/App.tsx`. Para agregar una página, crea su vista dentro de `src/components/views/` y registra su ruta en ese archivo. Si la página requiere permisos, usa `ProtectedRoute` y define el grupo en `src/constants/roles.ts`.
 
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
-
-## References
-
-- [Getting started with SharePoint Framework](https://docs.microsoft.com/sharepoint/dev/spfx/set-up-your-developer-tenant)
-- [Building for Microsoft teams](https://docs.microsoft.com/sharepoint/dev/spfx/build-for-teams-overview)
-- [Use Microsoft Graph in your solution](https://docs.microsoft.com/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
-- [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/sharepoint/dev/spfx/publish-to-marketplace-overview)
-- [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
-- [Heft Documentation](https://heft.rushstack.io/)"# INTRANET-CIES" 
+El cliente PnPjs se inicializa con el contexto del Web Part antes de renderizar React. Las consultas al servicio de SharePoint deben realizarse después de esa inicialización.
