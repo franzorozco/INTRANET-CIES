@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@fluentui/react-components';
 import { HomeRegular, ShieldKeyholeRegular } from '@fluentui/react-icons';
+import { INTRANET_ADMIN_ROLE } from '../../constants/roles';
 
 interface ISidebarProps {
   roles: string[];
 }
 
 export const Sidebar: React.FC<ISidebarProps> = ({ roles }) => {
-  // Ajusta 'Intranet_Admin' o el nombre del grupo de SharePoint que uses para admin
-  const isAdmin = roles.includes('Intranet_Admin') || roles.some(r => r.toLowerCase().includes('admin'));
+  const isAdmin = roles.indexOf(INTRANET_ADMIN_ROLE) !== -1;
 
   return (
     <aside style={{

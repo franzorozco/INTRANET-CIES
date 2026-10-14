@@ -12,7 +12,7 @@ export const ProtectedRoute: React.FC<IProtectedRouteProps> = ({
   requiredRole,
   children
 }) => {
-  if (requiredRole && !userRoles.includes(requiredRole)) {
+  if (requiredRole && userRoles.indexOf(requiredRole) === -1) {
     return (
       <div style={{ padding: '24px' }}>
         <MessageBar intent="error">
