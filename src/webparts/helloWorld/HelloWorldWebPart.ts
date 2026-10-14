@@ -12,6 +12,8 @@ import * as strings from 'HelloWorldWebPartStrings';
 import HelloWorld from './components/HelloWorld';
 import { IHelloWorldProps } from './components/IHelloWorldProps';
 
+import { getSP } from '../../services/spService';
+
 export interface IHelloWorldWebPartProps {
   description: string;
 }
@@ -21,14 +23,18 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
-  public render(): void {
+public render(): void {
+    // 1. Inicializa el cliente PnPjs con el contexto del Web Part
+    getSP(this.context);
+
     const element: React.ReactElement<IHelloWorldProps> = React.createElement(
       HelloWorld,
       {
         description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
-        userDisplayName: this.context.pageContext.user.displayName
+        userDisplayName: this.context.pageContext.user.displayName,
+        context: this.context // 2. Pasa el contexto como prop
       }
     );
 
