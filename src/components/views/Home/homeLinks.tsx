@@ -48,40 +48,40 @@ export const navLinks: ILinkItem[] = [
 
 /** Formularios de solicitudes */
 export const forms: ILinkItem[] = [
-  { label: 'Solicitudes de Uber', icon: <VehicleCar24Regular />, url: '' },
-  { label: 'Solicitud de BBSS', icon: <Box24Regular />, url: '' },
-  { label: 'Soporte técnico CIES', icon: <Toolbox24Regular />, url: '' },
-  { label: 'Solicitud de viaje', icon: <Airplane24Regular />, url: '' },
-  { label: 'Recepción correspondencia', icon: <Mail24Regular />, url: '' },
-  { label: 'Contrato', icon: <DocumentSignature24Regular />, url: '' },
-  { label: 'Contrato visado', icon: <DocumentCheckmark24Regular />, url: '' }
+  { label: 'Solicitudes de Uber', icon: <VehicleCar24Regular />, url: 'https://apps.powerapps.com/play/e/default-ea44d080-3ba8-4ce2-9aa3-90315977bf06/a/38d7751f-3d05-4bad-a209-1bb5739298bc?tenantId=ea44d080-3ba8-4ce2-9aa3-90315977bf06&hint=b64b269a-630c-419b-bff8-1c8fb41218d6&source=sharebutton&sourcetime=1791812400165#' },
+  { label: 'Solicitud de BBSS', icon: <Box24Regular />, url: 'http://solicitudbbss.cies.org.bo/' },
+  { label: 'Soporte técnico CIES', icon: <Toolbox24Regular />, url: 'https://ciesaccion.cies.org.bo/auth/login?returnUrl=/administracion-formularios/soporte-ti' },
+  { label: 'Solicitud de viaje', icon: <Airplane24Regular />, url: 'https://apps.powerapps.com/play/e/default-ea44d080-3ba8-4ce2-9aa3-90315977bf06/a/612e81e1-78d1-4a74-bfa9-dcf0190b277c?tenantId=ea44d080-3ba8-4ce2-9aa3-90315977bf06&sourcetime=1791897265974' },
+  { label: 'Recepción correspondencia', icon: <Mail24Regular />, url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=gNBE6qg74kyao5AxWXe_BgbPsZmm5lZOmSOPsQHa0ZVUQ01TVTNFSE5ZWEpERVk5T05ESkg4SjVJRS4u&route=shorturl' },
+  { label: 'Contrato', icon: <DocumentSignature24Regular />, url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=gNBE6qg74kyao5AxWXe_BjjN2Wpk1yFPoexSAGk-xm1UMjRMSFFUNEdSQ0FVMEQ5SkhTODkwT1dKRS4u&route=shorturl' },
+  { label: 'Contrato visado', icon: <DocumentCheckmark24Regular />, url: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=gNBE6qg74kyao5AxWXe_BjjN2Wpk1yFPoexSAGk-xm1UMDhXSjYwQkdLU1JBWThWOE1TUlJPSTlHSS4u' }
 ];
 
 /** Recursos de uso frecuente */
 export const resources: ILinkItem[] = [
-  { label: 'Sistema de encuestas', icon: <Poll24Regular />, url: '' },
-  { label: 'CIESACCION', icon: <Globe24Regular />, url: '' },
-  { label: 'MEDICARE', icon: <HeartPulse24Regular />, url: '' },
-  { label: 'MEDIBIT Admin', icon: <Stethoscope24Regular />, url: '' },
-  { label: 'DIM CIES', icon: <DocumentFolder24Regular />, url: '' },
-  { label: 'DIM Farmacia', icon: <Pill24Regular />, url: '' },
-  { label: 'DIM Liquidación', icon: <Calculator24Regular />, url: '' },
-  { label: 'DIM TES', icon: <Building24Regular />, url: '' },
-  { label: 'Test CIESACCION', icon: <Beaker24Regular />, url: '' },
-  { label: 'Test MEDICARE', icon: <Beaker24Regular />, url: '' },
-  { label: 'Test MEDIBIT Admin', icon: <Beaker24Regular />, url: '' },
-  { label: 'METABASE', icon: <DataBarVertical24Regular />, url: '' },
-  { label: 'Power BI', icon: <DataPie24Regular />, url: '' },
-  { label: 'Microsoft Azure', icon: <Cloud24Regular />, url: '' },
-  { label: 'SALAR Software', icon: <Database24Regular />, url: '' },
-  { label: 'SGP_App', icon: <Organization24Regular />, url: '' },
-  { label: 'WABO envío WhatsApp', icon: <Chat24Regular />, url: '' },
-  { label: 'BISA QR', icon: <QrCode24Regular />, url: '' },
-  { label: 'BioTime 8.0', icon: <Clock24Regular />, url: '' },
-  { label: 'AXS facturación', icon: <ReceiptMoney24Regular />, url: '' },
-  { label: 'PBX ON', icon: <Call24Regular />, url: '' },
-  { label: 'Sophos Central', icon: <ShieldCheckmark24Regular />, url: '' },
-  { label: 'Soporte TI', icon: <PersonSupport24Regular />, url: '' }
+  { label: 'Sistema de encuestas', icon: <Poll24Regular />, url: 'https://encuesta.cies.org.bo/' },
+  { label: 'CIESACCION', icon: <Globe24Regular />, url: 'http://ciesaccion.cies.org.bo/' },
+  { label: 'MEDICARE', icon: <HeartPulse24Regular />, url: 'https://medicare.cies.org.bo/' },
+  { label: 'MEDIBIT Admin', icon: <Stethoscope24Regular />, url: 'https://medibit.cies.org.bo/admin/' },
+  { label: 'DIM CIES', icon: <DocumentFolder24Regular />, url: 'http://dim.cies.org.bo/' },
+  { label: 'DIM Farmacia', icon: <Pill24Regular />, url: 'https://dim.farmacia.facturacion.cies.org.bo/' },
+  { label: 'DIM Liquidación', icon: <Calculator24Regular />, url: 'https://dim.liquidacion.cies.org.bo/' },
+  { label: 'DIM TES', icon: <Building24Regular />, url: 'http://bdim.cies.org.bo/' },
+  { label: 'Test CIESACCION', icon: <Beaker24Regular />, url: 'http://test.ciesaccion.cies.org.bo/' },
+  { label: 'Test MEDICARE', icon: <Beaker24Regular />, url: 'https://test.medicare.cies.org.bo/' },
+  { label: 'Test MEDIBIT Admin', icon: <Beaker24Regular />, url: 'https://test.medibit.cies.org.bo/admin/' },
+  { label: 'METABASE', icon: <DataBarVertical24Regular />, url: 'http://metabase.cies.org.bo:3000/' },
+  { label: 'Power BI', icon: <DataPie24Regular />, url: 'https://ciesbo.sharepoint.com/sites/CUADROSDEMANDOBI?e=1%3ac1f1aa6878804ebf8192e204ebf3dc56' },
+  { label: 'Microsoft Azure', icon: <Cloud24Regular />, url: 'https://portal.azure.com/' },
+  { label: 'SALAR Software', icon: <Database24Regular />, url: 'https://cies.salar11.net/ingresar.aspx' },
+  { label: 'SGP_App', icon: <Organization24Regular />, url: 'https://apps.powerapps.com/play/e/default-ea44d080-3ba8-4ce2-9aa3-90315977bf06/a/037b88e4-99ec-4a07-bf51-af896f3b27a6?tenantId=ea44d080-3ba8-4ce2-9aa3-90315977bf06&sourcetime=1736872077390' },
+  { label: 'WABO envío WhatsApp', icon: <Chat24Regular />, url: 'https://wabo.app/' },
+  { label: 'BISA QR', icon: <QrCode24Regular />, url: 'https://sip.mc4.com.bo/login' },
+  { label: 'BioTime 8.0', icon: <Clock24Regular />, url: 'http://sap.admin.cies.org.bo:8081/' },
+  { label: 'AXS facturación', icon: <ReceiptMoney24Regular />, url: 'https://misservicios.axsbolivia.com:61443/#/login' },
+  { label: 'PBX ON', icon: <Call24Regular />, url: 'https://192.168.0.150:8022/' },
+  { label: 'Sophos Central', icon: <ShieldCheckmark24Regular />, url: 'https://central.sophos.com/manage/login' },
+  { label: 'Soporte TI', icon: <PersonSupport24Regular />, url: 'http://soporteti.cies.org.bo/' }
 ];
 
 /** Franja "Accesos a sistemas" */
