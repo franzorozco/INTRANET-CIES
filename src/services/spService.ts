@@ -71,6 +71,19 @@ export const getCurrentUserSecurity = async (context?: WebPartContext): Promise<
 };
 
 /**
+ * Función de compatibilidad para consultar roles del usuario.
+ */
+export const getUserRoles = async (context?: WebPartContext): Promise<string[]> => {
+  try {
+    const sec = await getCurrentUserSecurity(context);
+    return sec.roles;
+  } catch (err) {
+    console.warn("Fallo al obtener roles vía PnP, intentando fallback:", err);
+    return [];
+  }
+};
+
+/**
  * Crea automáticamente los grupos requeridos en SharePoint si aún no existen.
  */
 export const ensureIntranetGroups = async (): Promise<{ created: string[]; existing: string[] }> => {
