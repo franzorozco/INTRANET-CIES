@@ -15,7 +15,6 @@ import { getCurrentUserSecurity, getSP, IUserSecurityInfo } from '../services/sp
 import { getUserGraphProfile, IUserGraphProfile } from '../services/graphService';
 import { ProtectedRoute } from './shared/ProtectedRoute';
 import { Header } from './layout/Header';
-import { Sidebar } from './layout/Sidebar';
 import { HomeView } from './views/Home/HomeView';
 import { ProfileView } from './views/Profile/ProfileView';
 import { AdminView } from './views/Admin/AdminView';
@@ -76,7 +75,7 @@ export const App: React.FC<IAppProps> = ({ context }) => {
 
   return (
     <FluentProvider theme={webLightTheme}>
-      <div style={{ fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif', backgroundColor: '#f3f2f1', minHeight: '85vh' }}>
+      <div style={{ fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif', backgroundColor: '#f3f2f1', minHeight: '85vh', width: '100%' }}>
         {loading ? (
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', gap: '12px' }}>
             <Spinner size="large" label="Conectando con Microsoft Graph y SharePoint..." />
@@ -99,51 +98,42 @@ export const App: React.FC<IAppProps> = ({ context }) => {
           </div>
         ) : (
           <HashRouter>
-            {/* Encabezado con datos oficiales de Microsoft Graph y Roles */}
+            {/* Encabezado con logotipo, controles y perfil de Microsoft Graph */}
             <Header profile={profile || undefined} security={security || undefined} />
 
-            <div style={{ display: 'flex', minHeight: 'calc(85vh - 65px)' }}>
-              {/* Barra lateral de navegación */}
-              <Sidebar
-                roles={security?.roles || []}
-                isSuperAdmin={security?.isSuperAdmin}
-                isAdmin={security?.isAdmin}
-              />
-
-              {/* Contenido principal */}
-              <main style={{ flex: 1, overflowY: 'auto' }}>
-                <Routes>
-                  <Route path="/" element={<HomeView />} />
-                  <Route
-                    path="/perfil"
-                    element={<ProfileView profile={profile || undefined} security={security || undefined} />}
-                  />
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute
-                        userRoles={security?.roles || []}
-                        isSuperAdmin={security?.isSuperAdmin}
-                        requiredRole={[INTRANET_SUPERADMIN_ROLE, INTRANET_ADMIN_ROLE]}
-                      >
-                        <AdminView />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="*"
-                    element={
-                      <div style={{ padding: '24px' }}>
-                        <MessageBar intent="warning">
-                          <MessageBarTitle>Página no encontrada</MessageBarTitle>
-                          <MessageBarBody>La dirección solicitada no existe en esta intranet.</MessageBarBody>
-                        </MessageBar>
-                      </div>
-                    }
-                  />
-                </Routes>
-              </main>
-            </div>
+            {/* Contenido principal full-width (sin barra lateral de navegación) */}
+            <main style={{ width: '100%', minHeight: 'calc(85vh - 65px)' }}>
+              <Routes>
+                <Route path="/" element={<HomeView />} />
+                <Route
+                  path="/perfil"
+                  element={<ProfileView profile={profile || undefined} security={security || undefined} />}
+                />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute
+                      userRoles={security?.roles || []}
+                      isSuperAdmin={security?.isSuperAdmin}
+                      requiredRole={[INTRANET_SUPERADMIN_ROLE, INTRANET_ADMIN_ROLE]}
+                    >
+                      <AdminView />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={
+                    <div style={{ padding: '24px' }}>
+                      <MessageBar intent="warning">
+                        <MessageBarTitle>Página no encontrada</MessageBarTitle>
+                        <MessageBarBody>La dirección solicitada no existe en esta intranet.</MessageBarBody>
+                      </MessageBar>
+                    </div>
+                  }
+                />
+              </Routes>
+            </main>
           </HashRouter>
         )}
       </div>
