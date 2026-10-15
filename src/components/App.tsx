@@ -112,13 +112,13 @@ export const App: React.FC<IAppProps> = ({ context }) => {
                 <Route
                   path="/admin"
                   element={
-                    <ProtectedRoute
-                      userRoles={security?.roles || []}
-                      isSuperAdmin={security?.isSuperAdmin}
-                      requiredRole={[INTRANET_SUPERADMIN_ROLE, INTRANET_ADMIN_ROLE]}
-                    >
-                      <AdminView />
-                    </ProtectedRoute>
+                      <ProtectedRoute
+                        userRoles={security?.roles || []}
+                        isSuperAdmin={security?.isSuperAdmin}
+                        requiredRole={INTRANET_SUPERADMIN_ROLE}
+                      >
+                        <AdminView />
+                      </ProtectedRoute>
                   }
                 />
                 <Route
