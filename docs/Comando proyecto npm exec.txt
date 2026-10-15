@@ -1,0 +1,5 @@
+Comando proyecto:
+npm exec -- heft trust-dev-cert
+npm run start
+https://ciesbo.sharepoint.com/sites/DevIntranet?loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/build/manifests.js
+
