@@ -4,6 +4,6 @@ import { App } from '../../../components/App';
 
 export default class HelloWorld extends React.Component<IHelloWorldProps, {}> {
   public render(): React.ReactElement<IHelloWorldProps> {
-    return <App />;
+    return <App context={this.props.context} />;
   }
 }
