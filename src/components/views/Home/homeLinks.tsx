@@ -41,9 +41,9 @@ export interface ILinkItem {
 export const navLinks: ILinkItem[] = [
   { label: 'Inicio', icon: <Home24Regular />, color: '#8cc63f', url: '/', active: true },
   { label: 'Formularios', icon: <DocumentBulletList24Regular />, color: '#7cc4ad', url: '#formularios' },
-  { label: 'Compartida.CIES', icon: <FolderPeople24Regular />, color: '#4fb3d9', url: '' },
-  { label: 'Power BI', icon: <DataPie24Regular />, color: '#f2c811', url: '' },
-  { label: 'Atención al cliente', icon: <PersonSupport24Regular />, color: '#ff7a59', url: '' }
+  { label: 'Compartida.CIES', icon: <FolderPeople24Regular />, color: '#4fb3d9', url: 'https://ciesbo.sharepoint.com/sites/compartidacies' },
+  { label: 'Power BI', icon: <DataPie24Regular />, color: '#f2c811', url: 'https://ciesbo.sharepoint.com/sites/CUADROSDEMANDOBI?e=1%3Ac1f1aa6878804ebf8192e204ebf3dc56http://' },
+  { label: 'Atención al cliente', icon: <PersonSupport24Regular />, color: '#ff7a59', url: 'https://ciesbo.sharepoint.com/sites/intranet/SitePages/Informativo%20Atenci%C3%B3n%20al%20Cliente.aspx' }
 ];
 
 /** Formularios de solicitudes */
