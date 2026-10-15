@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
-  PersonSupport24Regular, People24Regular, Receipt24Regular, DataBarVertical24Regular,
-  News24Regular, HeartPulse24Regular, QuestionCircle24Regular, HatGraduation24Regular,
+  Home24Regular, DocumentBulletList24Regular, FolderPeople24Regular, DataPie24Regular, PersonSupport24Regular,
   Search20Regular, ChevronLeft20Regular, ChevronRight20Regular, ArrowUp24Filled, ArrowDown24Filled,
   Mail16Regular, Call16Regular, Location16Regular, Building16Regular, Comment16Regular,
   ThumbLike16Regular, Trophy24Regular, Megaphone24Regular, Sparkle24Regular
@@ -9,14 +8,11 @@ import {
 import styles from './HomeView.module.scss';
 
 const quickLinks = [
-  { label: 'Soporte', icon: <PersonSupport24Regular /> },
-  { label: 'Directorio', icon: <People24Regular /> },
-  { label: 'Gastos', icon: <Receipt24Regular /> },
-  { label: 'Reportes', icon: <DataBarVertical24Regular /> },
-  { label: 'Boletín', icon: <News24Regular /> },
-  { label: 'Beneficios', icon: <HeartPulse24Regular /> },
-  { label: 'FAQs', icon: <QuestionCircle24Regular /> },
-  { label: 'Capacitación', icon: <HatGraduation24Regular /> }
+  { label: 'Inicio', icon: <Home24Regular />, color: '#8cc63f', active: true },
+  { label: 'Formularios', icon: <DocumentBulletList24Regular />, color: '#7cc4ad' },
+  { label: 'Compartida.CIES', icon: <FolderPeople24Regular />, color: '#4fb3d9' },
+  { label: 'Power BI', icon: <DataPie24Regular />, color: '#f2c811' },
+  { label: 'Atención al cliente', icon: <PersonSupport24Regular />, color: '#ff7a59' }
 ];
 
 const tabs = ['Todas', 'Anuncios', 'Eventos', 'Personas', 'Logros'];
@@ -133,16 +129,18 @@ export const HomeView: React.FC = () => {
       <section className={styles.hero}>
         {[styles.s1, styles.s2, styles.s3, styles.s4, styles.s5, styles.s6].map((s, i) =>
           <span key={i} className={`${styles.shape} ${s}`} />)}
-        <h1 className={styles.heroTitle}>¡Bienvenido a <span>CIES</span>!</h1>
+        <h1 className={styles.heroTitle}>¡Bienvenido a <span>INTRANET</span>!</h1>
         <label className={styles.search}>
           <Search20Regular />
           <input id="home-search" placeholder="Buscar formularios y plantillas..." />
         </label>
         <nav className={styles.quickLinks}>
           {quickLinks.map((q, i) => (
-            <button key={q.label} id={`ql-${i}`} className={styles.quickLink} style={{ animationDelay: `${0.3 + i * 0.08}s` }}>
+            <button key={q.label} id={`ql-${i}`}
+              className={`${styles.quickLink} ${q.active ? styles.quickLinkActive : ''}`}
+              style={{ animationDelay: `${0.3 + i * 0.1}s`, ['--accent' as string]: q.color } as React.CSSProperties}>
               <span className={styles.qIcon}>{q.icon}</span>
-              {q.label}
+              <span className={styles.qLabel}>{q.label}</span>
             </button>
           ))}
         </nav>

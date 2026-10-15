@@ -127,45 +127,106 @@ $font: 'Segoe UI', 'Inter', system-ui, sans-serif;
   }
 }
 
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-12deg); }
+  75% { transform: rotate(12deg); }
+}
+
 .quickLinks {
   position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 22px;
+  gap: 36px;
 }
 
 .quickLink {
+  --accent: #{$lime};
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   color: #fff;
-  font-size: 13px;
+  font: inherit;
+  font-size: 14px;
   font-weight: 600;
-  text-decoration: none;
   cursor: pointer;
   opacity: 0;
-  animation: pop 0.5s ease forwards;
+  animation: pop 0.6s ease forwards;
   background: none;
   border: none;
+  padding: 0;
 
   .qIcon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
+    position: relative;
+    width: 76px;
+    height: 76px;
+    border-radius: 22px;
     display: grid;
     place-items: center;
-    background: rgba(255, 255, 255, 0.12);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.35s cubic-bezier(.2, .9, .3, 1.4);
-    svg { font-size: 30px; }
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    transition: all 0.4s cubic-bezier(.2, .9, .3, 1.4);
+    svg { font-size: 36px; transition: transform 0.4s; }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      border: 2px solid var(--accent);
+      opacity: 0;
+    }
   }
-  &:hover .qIcon {
-    transform: translateY(-6px) scale(1.1);
-    background: $lime;
-    border-color: $lime;
-    box-shadow: 0 10px 24px rgba($lime, 0.5);
+
+  .qLabel {
+    position: relative;
+    padding-bottom: 6px;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 3px;
+      border-radius: 2px;
+      background: #fff;
+      transform: translateX(-50%);
+      transition: width 0.35s ease;
+    }
+  }
+
+  &:hover {
+    .qIcon {
+      transform: translateY(-8px) rotate(-4deg);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      svg { animation: wiggle 0.5s ease; }
+      &::after { animation: pulseRing 1.2s ease-out infinite; }
+    }
+    .qLabel::after { width: 100%; }
+  }
+}
+
+.quickLinkActive {
+  .qIcon {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    &::after { animation: pulseRing 2s ease-out infinite; }
+  }
+  .qLabel {
+    font-weight: 800;
+    &::after { width: 100%; }
   }
 }
 
