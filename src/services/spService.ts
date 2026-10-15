@@ -26,7 +26,9 @@ export interface IUserSecurityInfo {
 }
 
 export const getSP = (context?: WebPartContext): ReturnType<typeof spfi> => {
-  if (!_sp && context) {
+  if (context && context.pageContext?.web) {
+    _sp = spfi().using(SPFx(context));
+  } else if (!_sp && context) {
     _sp = spfi().using(SPFx(context));
   }
 
@@ -41,36 +43,59 @@ export const getSP = (context?: WebPartContext): ReturnType<typeof spfi> => {
  * Obtiene la información completa de seguridad, grupos y roles del usuario actual en SharePoint.
  */
 export const getCurrentUserSecurity = async (context?: WebPartContext): Promise<IUserSecurityInfo> => {
-  const sp = getSP(context);
+  const fallbackEmail = (context?.pageContext?.user?.email || '').toLowerCase().trim();
+  const fallbackName = context?.pageContext?.user?.displayName || 'Usuario';
+  const fallbackLogin = context?.pageContext?.user?.loginName || fallbackEmail;
+  const isFallbackSuperAdmin = SUPER_ADMIN_EMAILS.some(email => email.toLowerCase().trim() === fallbackEmail)
+    || fallbackEmail.indexOf('pasantia') !== -1
+    || fallbackName.toLowerCase().indexOf('pasantia') !== -1;
 
-  // 1. Obtener datos del usuario actual desde SharePoint
-  const currentUser = await sp.web.currentUser();
-  const userGroups = await sp.web.currentUser.groups();
-  const roleNames = userGroups.map((g: { Title: string }) => g.Title);
+  try {
+    const sp = getSP(context);
 
-  // 2. Comprobar si el usuario es Super Admin por correo, por grupo, por título o por Administrador de Colección de Sitios
-  const userEmail = (currentUser.Email || context?.pageContext?.user?.email || '').toLowerCase().trim();
-  const userTitle = (currentUser.Title || context?.pageContext?.user?.displayName || '').toLowerCase().trim();
-  const isEmailSuperAdmin = SUPER_ADMIN_EMAILS.some(email => email.toLowerCase().trim() === userEmail)
-    || userEmail.indexOf('pasantia') !== -1
-    || userTitle.indexOf('pasantia') !== -1;
-  const isSiteAdmin = !!currentUser.IsSiteAdmin;
-  const hasSuperAdminGroup = roleNames.indexOf(INTRANET_SUPERADMIN_ROLE) !== -1;
+    // 1. Obtener datos del usuario actual desde SharePoint
+    const currentUser = await sp.web.currentUser();
+    const userGroups = await sp.web.currentUser.groups();
+    const roleNames = userGroups.map((g: { Title: string }) => g.Title);
 
-  const isSuperAdmin = isSiteAdmin || isEmailSuperAdmin || hasSuperAdminGroup;
-  const isAdmin = isSuperAdmin || roleNames.indexOf(INTRANET_ADMIN_ROLE) !== -1;
+    // 2. Comprobar si el usuario es Super Admin por correo, por grupo, por título o por Administrador de Colección de Sitios
+    const userEmail = (currentUser?.Email || fallbackEmail).toLowerCase().trim();
+    const userTitle = (currentUser?.Title || fallbackName).toLowerCase().trim();
+    const isEmailSuperAdmin = SUPER_ADMIN_EMAILS.some(email => email.toLowerCase().trim() === userEmail)
+      || userEmail.indexOf('pasantia') !== -1
+      || userTitle.indexOf('pasantia') !== -1;
+    const isSiteAdmin = !!currentUser?.IsSiteAdmin;
+    const hasSuperAdminGroup = roleNames.indexOf(INTRANET_SUPERADMIN_ROLE) !== -1;
 
-  return {
-    userId: currentUser.Id,
-    displayName: currentUser.Title || context?.pageContext?.user?.displayName || 'Usuario',
-    email: currentUser.Email || userEmail,
-    loginName: currentUser.LoginName,
-    isSiteAdmin,
-    isSuperAdmin,
-    isAdmin,
-    roles: roleNames,
-    hasRole: (role: string) => isSuperAdmin || roleNames.indexOf(role) !== -1
-  };
+    const isSuperAdmin = isSiteAdmin || isEmailSuperAdmin || hasSuperAdminGroup;
+    const isAdmin = isSuperAdmin || roleNames.indexOf(INTRANET_ADMIN_ROLE) !== -1;
+
+    return {
+      userId: currentUser?.Id || 0,
+      displayName: currentUser?.Title || fallbackName,
+      email: currentUser?.Email || userEmail,
+      loginName: currentUser?.LoginName || fallbackLogin,
+      isSiteAdmin,
+      isSuperAdmin,
+      isAdmin,
+      roles: roleNames,
+      hasRole: (role: string) => isSuperAdmin || roleNames.indexOf(role) !== -1
+    };
+  } catch (err) {
+    console.warn("Aviso al consultar SharePoint con PnPjs (se aplicó fallback seguro del pageContext):", err);
+
+    return {
+      userId: 0,
+      displayName: fallbackName,
+      email: fallbackEmail,
+      loginName: fallbackLogin,
+      isSiteAdmin: isFallbackSuperAdmin,
+      isSuperAdmin: isFallbackSuperAdmin,
+      isAdmin: isFallbackSuperAdmin,
+      roles: isFallbackSuperAdmin ? [INTRANET_SUPERADMIN_ROLE, INTRANET_ADMIN_ROLE] : [],
+      hasRole: () => isFallbackSuperAdmin
+    };
+  }
 };
 
 /**
