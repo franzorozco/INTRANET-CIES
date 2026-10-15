@@ -86,12 +86,12 @@ export const resources: ILinkItem[] = [
 
 /** Franja "Accesos a sistemas" */
 export const systems: ILinkItem[] = [
-  { label: 'MEDICARE', desc: 'Gestión clínica', icon: <HeartPulse24Regular />, color: '#2f9e44', url: '' },
-  { label: 'COMPARTIDA.CIES', desc: 'Documentos compartidos', icon: <Folder24Regular />, color: '#0078d4', url: '' },
-  { label: 'SALAR RRHH', desc: 'Talento humano', icon: <PeopleCommunity24Regular />, color: '#1c3f94', url: '' },
-  { label: 'SGD', desc: 'Gestión documental', icon: <DocumentFolder24Regular />, color: '#8cc63f', url: '' },
-  { label: 'BIOFILE', desc: 'Control biométrico', icon: <Fingerprint24Regular />, color: '#1fa2d6', url: '' },
-  { label: 'SEGURO ESTAR BIEN', desc: 'Alianza seguros', icon: <ShieldTask24Regular />, color: '#004a98', url: '' }
+  { label: 'MEDICARE', desc: 'Gestión clínica', icon: <HeartPulse24Regular />, color: '#2f9e44', url: 'https://medicare.cies.org.bo/' },
+  { label: 'COMPARTIDA.CIES', desc: 'Documentos compartidos', icon: <Folder24Regular />, color: '#0078d4', url: 'https://ciesbo.sharepoint.com/sites/compartidacies' },
+  { label: 'SALAR RRHH', desc: 'Talento humano', icon: <PeopleCommunity24Regular />, color: '#1c3f94', url: 'https://cies.salar11.net/ingresar.aspx' },
+  { label: 'SGD', desc: 'Gestión documental', icon: <DocumentFolder24Regular />, color: '#8cc63f', url: 'http://sgd.cies.org.bo/' },
+  { label: 'BIOFILE', desc: 'Control biométrico', icon: <Fingerprint24Regular />, color: '#1fa2d6', url: 'https://ong.biofile.com.co/' },
+  { label: 'SEGURO ESTAR BIEN', desc: 'Alianza seguros', icon: <ShieldTask24Regular />, color: '#004a98', url: 'https://www.alianza.com.bo/SingleUserR2/Home' }
 ];
 
 /** Nuevas páginas */
@@ -102,6 +102,6 @@ export const newPages: ILinkItem[] = [
 
 /** Descargas */
 export const downloads: ILinkItem[] = [
-  { label: 'AnyDesk', desc: 'Soporte remoto', icon: <Desktop24Regular />, color: '#ef443b', url: '' },
-  { label: 'Microsoft Teams', desc: 'Chat y reuniones', icon: <PeopleTeam24Regular />, color: '#5b5fc7', url: '' }
+  { label: 'AnyDesk', desc: 'Soporte remoto', icon: <Desktop24Regular />, color: '#ef443b', url: 'https://anydesk.com/es/downloads/thank-you?dv=win_exe' },
+  { label: 'Microsoft Teams', desc: 'Chat y reuniones', icon: <PeopleTeam24Regular />, color: '#5b5fc7', url: 'https://www.microsoft.com/es-es/microsoft-teams/download-app' }
 ];
