@@ -1,6 +1,6 @@
 # Intranet CIES
 
-Solución de SharePoint Framework (SPFx) para la intranet CIES. El Web Part aloja una aplicación React con navegación interna, vistas y consulta de grupos de SharePoint mediante PnPjs.
+Solución de SharePoint Framework (SPFx) para la intranet CIES. El Web Part aloja una aplicación React con navegación interna, vistas y consulta de grupos de SharePoint mediante el cliente HTTP de SPFx.
 
 ## Requisitos para el equipo
 
@@ -29,7 +29,7 @@ No es necesario instalar Heft ni las librerías del proyecto globalmente: npm la
 
    Si se modifica `package.json` y se actualiza el archivo de bloqueo, usar `npm install` para actualizar las dependencias.
 
-3. Configurar el tenant en `config/serve.json`: reemplazar `{tenantDomain}` en `initialPage` por el dominio del tenant que usarán para las pruebas. No se deben guardar contraseñas, tokens ni secretos en ese archivo.
+3. `config/serve.json` ya apunta al sitio de desarrollo `DevIntranet` y carga el manifiesto local desde `/temp/build/manifests.js`. Si trabajas con otro sitio, actualiza `initialPage` con su URL moderna y conserva los parámetros `loadSPFX` y `debugManifestsFile`. No se deben guardar contraseñas, tokens ni secretos en ese archivo.
 
 ## Desarrollo y compilación
 
@@ -55,7 +55,7 @@ Estas dependencias se instalan automáticamente con `npm ci`; no hace falta ejec
 - **React 17** y **React DOM**: interfaz de usuario.
 - **Fluent UI React v9**, **Fluent UI React v8** y **Fluent UI Icons**: componentes, estilos e iconos.
 - **React Router v6**: navegación entre vistas de la aplicación.
-- **PnPjs v4** (`@pnp/sp`, `@pnp/logging`): acceso a SharePoint.
+- **SPHttpClient** (`@microsoft/sp-http`): solicitudes autenticadas a SharePoint con el contexto del Web Part.
 - **TypeScript 5.8**, **Heft** y herramientas SPFx: compilación, lint y empaquetado.
 
 Las versiones exactas y el resto de dependencias están declaradas en `package.json`; `package-lock.json` permite que todos instalen el mismo árbol de paquetes con `npm ci`.
@@ -69,10 +69,10 @@ src/
 │   ├── shared/       # Componentes reutilizables, como la protección de rutas
 │   └── views/        # Páginas de la aplicación
 ├── constants/        # Valores compartidos, como el grupo de administración
-├── services/         # Acceso a SharePoint con PnPjs
+├── services/         # Acceso a SharePoint mediante SPHttpClient
 └── webparts/         # Punto de entrada SPFx
 ```
 
 Las rutas y el layout principal se definen en `src/components/App.tsx`. Para agregar una página, crea su vista dentro de `src/components/views/` y registra su ruta en ese archivo. Si la página requiere permisos, usa `ProtectedRoute` y define el grupo en `src/constants/roles.ts`.
 
-El cliente PnPjs se inicializa con el contexto del Web Part antes de renderizar React. Las consultas al servicio de SharePoint deben realizarse después de esa inicialización.
+El contexto del Web Part se pasa a la aplicación React y se utiliza para realizar solicitudes autenticadas con `SPHttpClient`.

@@ -1,25 +1,37 @@
-import { spfi, SPFx } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/site-users/web";
-import "@pnp/sp/site-groups/web";
 import type { WebPartContext } from "@microsoft/sp-webpart-base";
+import { SPHttpClient } from "@microsoft/sp-http";
 
-let _sp: ReturnType<typeof spfi> | undefined;
+interface ISharePointGroup {
+  Title: string;
+}
 
-export const getSP = (context?: WebPartContext): ReturnType<typeof spfi> => {
-  if (!_sp && context) {
-    _sp = spfi().using(SPFx(context));
+interface ISharePointGroupsResponse {
+  value?: ISharePointGroup[];
+  d?: {
+    results: ISharePointGroup[];
+  };
+}
+
+export const getUserRoles = async (context: WebPartContext): Promise<string[]> => {
+  const webUrl = context.pageContext && context.pageContext.web && context.pageContext.web.absoluteUrl;
+  if (!webUrl) {
+    throw new Error("No se pudo obtener la dirección del sitio de SharePoint desde el contexto del Web Part.");
   }
 
-  if (!_sp) {
-    throw new Error("El cliente de SharePoint no ha sido inicializado. Llama a getSP(context) desde el Web Part primero.");
+  const response = await context.spHttpClient.get(
+    `${webUrl}/_api/web/currentuser/groups?$select=Title`,
+    SPHttpClient.configurations.v1
+  );
+
+  if (!response.ok) {
+    throw new Error(`SharePoint rechazó la consulta de grupos (HTTP ${response.status} ${response.statusText}).`);
   }
 
-  return _sp;
-};
+  const result = await response.json() as ISharePointGroupsResponse;
+  const groups = result.value || (result.d && result.d.results);
+  if (!groups) {
+    throw new Error("SharePoint devolvió una respuesta de grupos con un formato no reconocido.");
+  }
 
-export const getUserRoles = async (): Promise<string[]> => {
-  const sp = getSP();
-  const groups = await sp.web.currentUser.groups();
-  return groups.map((g: { Title: string }) => g.Title);
+  return groups.map((group) => group.Title);
 };

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
+import type { WebPartContext } from '@microsoft/sp-webpart-base';
 import {
   Button,
   FluentProvider,
@@ -12,22 +13,25 @@ import {
 import { INTRANET_ADMIN_ROLE } from '../constants/roles';
 import { getUserRoles } from '../services/spService';
 import { ProtectedRoute } from './shared/ProtectedRoute';
-import { Sidebar } from './layout/Sidebar';
 import { HomeView } from './views/Home/HomeView';
 import { AdminView } from './views/Admin/AdminView';
 
-export const App: React.FC = () => {
+interface IAppProps {
+  context: WebPartContext;
+}
+
+export const App: React.FC<IAppProps> = ({ context }) => {
   const [roles, setRoles] = React.useState<string[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [loadError, setLoadError] = React.useState<boolean>(false);
+  const [loadError, setLoadError] = React.useState<string | undefined>();
   const [loadAttempt, setLoadAttempt] = React.useState<number>(0);
 
   React.useEffect(() => {
     let isMounted = true;
     setLoading(true);
-    setLoadError(false);
+    setLoadError(undefined);
 
-    getUserRoles().then(
+    getUserRoles(context).then(
       (userRoles) => {
         if (isMounted) {
           setRoles(userRoles);
@@ -38,7 +42,7 @@ export const App: React.FC = () => {
         console.error('Error al obtener grupos de SharePoint:', err);
         if (isMounted) {
           setRoles([]);
-          setLoadError(true);
+          setLoadError(err instanceof Error ? err.message : 'Error inesperado al consultar SharePoint.');
           setLoading(false);
         }
       }
@@ -47,7 +51,7 @@ export const App: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [loadAttempt]);
+  }, [context, loadAttempt]);
 
   return (
     <FluentProvider theme={webLightTheme}>
@@ -60,7 +64,7 @@ export const App: React.FC = () => {
           <MessageBar intent="error">
             <MessageBarTitle>No se pudieron cargar los permisos</MessageBarTitle>
             <MessageBarBody>
-              Verifica tu conexión con SharePoint e inténtalo de nuevo.
+              {loadError} Verifica tu conexión y permisos de SharePoint e inténtalo de nuevo.
             </MessageBarBody>
           </MessageBar>
           <Button
@@ -73,9 +77,8 @@ export const App: React.FC = () => {
         </div>
       ) : (
         <HashRouter>
-          <div style={{ display: 'flex', minHeight: '85vh' }}>
-            <Sidebar roles={roles} />
-            <main style={{ flex: 1, backgroundColor: '#f3f2f1' }}>
+          <div style={{ minHeight: '85vh', width: '100%' }}>
+            <main style={{ width: '100%', backgroundColor: '#f3f2f1' }}>
               <Routes>
                 <Route path="/" element={<HomeView />} />
                 <Route
