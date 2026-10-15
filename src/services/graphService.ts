@@ -9,13 +9,15 @@ export interface IUserGraphProfile {
   jobTitle: string;
   department: string;
   officeLocation: string;
+  mobilePhone?: string;
+  companyName?: string;
   photoUrl?: string;
   isGraphConnected: boolean;
 }
 
 /**
  * Obtiene el perfil completo del usuario autenticado en Microsoft 365 vía Microsoft Graph.
- * Incluye nombre, correo, cargo, departamento y foto oficial de Microsoft 365.
+ * Incluye nombre, correo, cargo, departamento, teléfono y foto oficial de Microsoft 365.
  */
 export const getUserGraphProfile = async (context: WebPartContext): Promise<IUserGraphProfile> => {
   const fallbackEmail = context.pageContext?.user?.email || '';
@@ -28,7 +30,7 @@ export const getUserGraphProfile = async (context: WebPartContext): Promise<IUse
 
     // 2. Consultar el endpoint /me
     const me = await client.api('/me')
-      .select('displayName,mail,userPrincipalName,jobTitle,department,officeLocation')
+      .select('displayName,mail,userPrincipalName,jobTitle,department,officeLocation,mobilePhone,companyName')
       .get();
 
     let photoUrl: string | undefined = undefined;
@@ -52,7 +54,9 @@ export const getUserGraphProfile = async (context: WebPartContext): Promise<IUse
       userPrincipalName: me.userPrincipalName || fallbackLogin,
       jobTitle: me.jobTitle || 'Colaborador CIES',
       department: me.department || 'General',
-      officeLocation: me.officeLocation || '',
+      officeLocation: me.officeLocation || 'Oficina Nacional',
+      mobilePhone: me.mobilePhone || undefined,
+      companyName: me.companyName || 'CIES Salud Sexual Salud Reproductiva',
       photoUrl,
       isGraphConnected: true
     };
@@ -65,7 +69,9 @@ export const getUserGraphProfile = async (context: WebPartContext): Promise<IUse
       userPrincipalName: fallbackLogin,
       jobTitle: 'Colaborador CIES',
       department: 'General',
-      officeLocation: '',
+      officeLocation: 'Oficina Nacional',
+      mobilePhone: undefined,
+      companyName: 'CIES Salud Sexual Salud Reproductiva',
       photoUrl: undefined,
       isGraphConnected: false
     };

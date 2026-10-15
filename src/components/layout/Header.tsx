@@ -94,12 +94,12 @@ export const Header: React.FC<IHeaderProps> = ({ profile, security }) => {
 
       {/* Lado Derecho: Control de Roles y Botón de Perfil M365 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {/* Acceso al Panel de Roles para administradores */}
-        {(isSuperAdmin || isAdmin) && (
+        {/* Acceso al Panel de Roles (Exclusivo para Super Administradores) */}
+        {isSuperAdmin && (
           <Link to="/admin" style={{ textDecoration: 'none' }}>
             <Button
               icon={<ShieldKeyholeRegular />}
-              appearance={isAdminActive ? 'primary' : 'subtle'}
+              appearance={isAdminActive ? 'primary' : 'outline'}
               size="medium"
             >
               Control de Roles
@@ -119,15 +119,16 @@ export const Header: React.FC<IHeaderProps> = ({ profile, security }) => {
             gap: '12px',
             padding: '6px 12px',
             borderRadius: '8px',
-            backgroundColor: isProfileActive ? '#edf5fd' : '#f9f9f9',
-            border: isProfileActive ? '1px solid #0078d4' : '1px solid #edebe9',
+            backgroundColor: isProfileActive ? '#f0f6ff' : '#f8f9fa',
+            border: isProfileActive ? '1px solid #c7dffc' : '1px solid #edebe9',
+            boxShadow: isProfileActive ? '0 1px 4px rgba(0, 120, 212, 0.12)' : 'none',
             transition: 'all 0.15s ease-in-out',
             cursor: 'pointer'
           }}
         >
           <div style={{ textAlign: 'right' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px' }}>
-              <Text weight="semibold" size={300} style={{ color: isProfileActive ? '#0078d4' : '#323130' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+              <Text weight="semibold" size={300} style={{ color: '#201f1e' }}>
                 {profile?.displayName || security?.displayName || 'Cargando...'}
               </Text>
               <Badge
@@ -139,7 +140,7 @@ export const Header: React.FC<IHeaderProps> = ({ profile, security }) => {
                 {roleLabel}
               </Badge>
             </div>
-            <Text size={200} style={{ color: '#605e5c', display: 'block', marginTop: '1px' }}>
+            <Text size={200} style={{ color: '#605e5c', display: 'block', marginTop: '2px' }}>
               {profile?.jobTitle || 'CIES'} {profile?.department ? `• ${profile.department}` : ''}
             </Text>
           </div>
