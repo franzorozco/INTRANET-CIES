@@ -77,7 +77,7 @@ export const AdminView: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    loadMembers(activeGroup);
+    void loadMembers(activeGroup);
   }, [activeGroup, loadMembers]);
 
   // Manejar creación / verificación automática de grupos

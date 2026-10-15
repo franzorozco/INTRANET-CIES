@@ -66,7 +66,7 @@ export const App: React.FC<IAppProps> = ({ context }) => {
       }
     };
 
-    loadData();
+    void loadData();
 
     return () => {
       isMounted = false;

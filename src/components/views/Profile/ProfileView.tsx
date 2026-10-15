@@ -54,7 +54,7 @@ export const ProfileView: React.FC<IProfileViewProps> = ({ profile, security }) 
 
   const handleCopyEmail = () => {
     if (email && email !== 'No disponible') {
-      navigator.clipboard.writeText(email);
+      void navigator.clipboard.writeText(email);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
