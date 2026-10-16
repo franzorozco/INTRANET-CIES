@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import {
   Button,
   FluentProvider,
@@ -104,10 +104,12 @@ export const App: React.FC<IAppProps> = ({ context }) => {
             {/* Contenido principal full-width (sin barra lateral de navegación) */}
             <main style={{ width: '100%', minHeight: 'calc(85vh - 65px)' }}>
               <Routes>
-                <Route path="/" element={<HomeView />} />
+                <Route path="/" element={<HomeView context={context} />} />
+                <Route path="/home" element={<HomeView context={context} />} />
+                <Route path="/%2F" element={<Navigate to="/" replace />} />
                 <Route
                   path="/perfil"
-                  element={<ProfileView profile={profile || undefined} security={security || undefined} />}
+                  element={<ProfileView profile={profile || undefined} security={security || undefined} context={context} />}
                 />
                 <Route
                   path="/admin"
@@ -121,17 +123,8 @@ export const App: React.FC<IAppProps> = ({ context }) => {
                       </ProtectedRoute>
                   }
                 />
-                <Route
-                  path="*"
-                  element={
-                    <div style={{ padding: '24px' }}>
-                      <MessageBar intent="warning">
-                        <MessageBarTitle>Página no encontrada</MessageBarTitle>
-                        <MessageBarBody>La dirección solicitada no existe en esta intranet.</MessageBarBody>
-                      </MessageBar>
-                    </div>
-                  }
-                />
+                {/* Cualquier otra ruta o hash residual redirige inmediatamente a la página principal */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>
           </HashRouter>

@@ -30,15 +30,19 @@ import {
   CopyRegular
 } from '@fluentui/react-icons';
 import { Link } from 'react-router-dom';
+import type { WebPartContext } from '@microsoft/sp-webpart-base';
+import { CalendarEventsWidget } from '../../shared/CalendarEventsWidget';
+import { MyEventsViewer } from '../../shared/MyEventsViewer';
 import { IUserGraphProfile } from '../../../services/graphService';
 import { IUserSecurityInfo } from '../../../services/spService';
 
 interface IProfileViewProps {
   profile?: IUserGraphProfile;
   security?: IUserSecurityInfo;
+  context?: WebPartContext;
 }
 
-export const ProfileView: React.FC<IProfileViewProps> = ({ profile, security }) => {
+export const ProfileView: React.FC<IProfileViewProps> = ({ profile, security, context }) => {
   const isSuperAdmin = security?.isSuperAdmin;
   const isAdmin = security?.isAdmin;
   const [copied, setCopied] = React.useState<boolean>(false);
@@ -423,7 +427,13 @@ export const ProfileView: React.FC<IProfileViewProps> = ({ profile, security }) 
         </Card>
       </div>
 
-      {/* 3. AVISO INFORMATIVO DE SOLO LECTURA */}
+      {/* 3. VISOR DE MIS EVENTOS Y PARTICIPACIONES (OUTLOOK M365) */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <MyEventsViewer context={context} />
+        <CalendarEventsWidget context={context} />
+      </div>
+
+      {/* 4. AVISO INFORMATIVO DE SOLO LECTURA */}
       <div style={{
         padding: '16px 20px',
         backgroundColor: '#edf5fd',

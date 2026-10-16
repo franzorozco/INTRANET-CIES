@@ -6,11 +6,14 @@ import {
   Apps24Regular, HeartPulse24Regular, Cloud24Regular, Poll24Regular,
   ArrowSync20Regular, ArrowTrending20Regular, ChevronDown16Regular,
   Toolbox24Regular, Sparkle24Regular, Rocket24Regular, Grid24Regular,
-  DataTrending24Regular, Location24Regular
+  DataTrending24Regular, Location24Regular, CalendarLtr24Regular
 } from '@fluentui/react-icons';
+import type { WebPartContext } from '@microsoft/sp-webpart-base';
 import styles from './HomeView.module.scss';
 import { SmartLink } from './SmartLink';
 import { Reveal } from './Reveal';
+import { CalendarEventsWidget } from '../../shared/CalendarEventsWidget';
+import { GeneralEventsViewer } from '../../shared/GeneralEventsViewer';
 import {
   navLinks, forms, resources, systems, newPages, downloads
 } from './homeLinks';
@@ -22,7 +25,11 @@ import {
 const accent = (color?: string): React.CSSProperties =>
   (color ? { ['--accent' as string]: color } : {}) as React.CSSProperties;
 
-export const HomeView: React.FC = () => {
+export interface IHomeViewProps {
+  context?: WebPartContext;
+}
+
+export const HomeView: React.FC<IHomeViewProps> = ({ context }) => {
   // Estado para el buscador del banner
   const [query, setQuery] = React.useState('');
 
@@ -32,7 +39,7 @@ export const HomeView: React.FC = () => {
   const [isToolsModalOpen, setIsToolsModalOpen] = React.useState(false);
 
   // Pestaña activa del tablero de control (tablero dividido)
-  const [dashTab, setDashTab] = React.useState<'indicadores' | 'tendencias' | 'operacion'>('indicadores');
+  const [dashTab, setDashTab] = React.useState<'indicadores' | 'tendencias' | 'operacion' | 'agenda'>('indicadores');
 
   // Filtros internos de modales
   const [modalSearch, setModalSearch] = React.useState('');
@@ -624,6 +631,13 @@ export const HomeView: React.FC = () => {
         </div>
       </section>
 
+      {/* SECCIÓN DESTACADA: VISOR DE EVENTOS Y CAMPAÑAS INSTITUCIONALES CIES */}
+      <Reveal as="section" className={styles.priorityWrap} id="eventos-institucionales" delay={0.08}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
+          <GeneralEventsViewer context={context} />
+        </div>
+      </Reveal>
+
       {/* 4. DASHBOARD INSTITUCIONAL COMPLETO (DESPUÉS DEL BANNER) */}
       <Reveal as="section" className={styles.dashboardContainer} id="dashboard">
         {/* Controles de Dashboard */}
@@ -683,7 +697,8 @@ export const HomeView: React.FC = () => {
           {[
             { key: 'indicadores' as const, label: 'Indicadores clave', icon: <Poll24Regular /> },
             { key: 'tendencias' as const, label: 'Tendencias y distribución', icon: <DataTrending24Regular /> },
-            { key: 'operacion' as const, label: 'Regionales y actividad', icon: <Location24Regular /> }
+            { key: 'operacion' as const, label: 'Regionales y actividad', icon: <Location24Regular /> },
+            { key: 'agenda' as const, label: 'Calendario & Eventos M365 / CIES', icon: <CalendarLtr24Regular /> }
           ].map(t => (
             <button
               key={t.key}
@@ -972,6 +987,13 @@ export const HomeView: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+        )}
+
+        {/* Pestaña: Calendario & Eventos Sobrepuestos (M365 Personal + Institucional CIES) */}
+        {dashTab === 'agenda' && (
+        <div className={styles.tabPanel} key="tab-agenda" style={{ marginTop: '16px' }}>
+          <CalendarEventsWidget context={context} />
         </div>
         )}
       </Reveal>

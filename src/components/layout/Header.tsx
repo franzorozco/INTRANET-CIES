@@ -9,9 +9,9 @@ import {
 import {
   ShieldCheckmarkRegular,
   CloudCheckmarkRegular,
-  HomeRegular,
-  ShieldKeyholeRegular
+  HomeRegular
 } from '@fluentui/react-icons';
+import { LOGO_CIES_BASE64 } from '../../assets/image/cies/logoCiesDataUri';
 import { IUserGraphProfile } from '../../services/graphService';
 import { IUserSecurityInfo } from '../../services/spService';
 import { INTRANET_ADMIN_ROLE } from '../../constants/roles';
@@ -39,8 +39,7 @@ export const Header: React.FC<IHeaderProps> = ({ profile, security }) => {
     : 'subtle';
 
   const isProfileActive = location.pathname === '/perfil';
-  const isAdminActive = location.pathname === '/admin';
-  const isHomeActive = location.pathname === '/';
+  const isHomeActive = location.pathname === '/' || location.pathname === '' || location.pathname === '/%2F' || location.pathname === '/home';
 
   return (
     <header style={{
@@ -58,17 +57,15 @@ export const Header: React.FC<IHeaderProps> = ({ profile, security }) => {
       {/* Logotipo y Título de la Intranet */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '14px', color: 'inherit' }}>
-          <div style={{
-            backgroundColor: '#0078d4',
-            color: '#ffffff',
-            fontWeight: 700,
-            fontSize: '18px',
-            padding: '6px 14px',
-            borderRadius: '6px',
-            letterSpacing: '1px'
-          }}>
-            CIES
-          </div>
+          <img
+            src={LOGO_CIES_BASE64}
+            alt="Logo CIES"
+            style={{
+              height: '42px',
+              width: 'auto',
+              objectFit: 'contain'
+            }}
+          />
           <div>
             <Text weight="bold" size={400} style={{ color: '#201f1e', display: 'block' }}>
               INTRANET CORPORATIVA
@@ -92,20 +89,8 @@ export const Header: React.FC<IHeaderProps> = ({ profile, security }) => {
         )}
       </div>
 
-      {/* Lado Derecho: Control de Roles y Botón de Perfil M365 */}
+      {/* Lado Derecho: Botón de Perfil M365 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {/* Acceso al Panel de Roles (Exclusivo para Super Administradores) */}
-        {isSuperAdmin && (
-          <Link to="/admin" style={{ textDecoration: 'none' }}>
-            <Button
-              icon={<ShieldKeyholeRegular />}
-              appearance={isAdminActive ? 'primary' : 'outline'}
-              size="medium"
-            >
-              Control de Roles
-            </Button>
-          </Link>
-        )}
 
         {/* Botón interactivo de Mi Perfil & M365 (Pasantia Sistemas / Foto) */}
         <Link
