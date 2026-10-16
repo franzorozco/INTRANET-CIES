@@ -1,13 +1,16 @@
 import * as React from 'react';
 import {
-  DocumentBulletList24Regular, Database24Regular,
+  DocumentBulletList24Regular,
   Search20Regular, Dismiss16Regular, Dismiss24Regular, Open16Regular,
   ArrowRight16Regular, ArrowDownload20Regular,
   Apps24Regular, HeartPulse24Regular, Cloud24Regular, Poll24Regular,
-  ArrowSync20Regular, ArrowTrending20Regular, ChevronDown16Regular
+  ArrowSync20Regular, ArrowTrending20Regular, ChevronDown16Regular,
+  Toolbox24Regular, Sparkle24Regular, Rocket24Regular, Grid24Regular,
+  DataTrending24Regular, Location24Regular
 } from '@fluentui/react-icons';
 import styles from './HomeView.module.scss';
 import { SmartLink } from './SmartLink';
+import { Reveal } from './Reveal';
 import {
   navLinks, forms, resources, systems, newPages, downloads
 } from './homeLinks';
@@ -26,6 +29,10 @@ export const HomeView: React.FC = () => {
   // Modales popups en el banner
   const [isFormsModalOpen, setIsFormsModalOpen] = React.useState(false);
   const [isResourcesModalOpen, setIsResourcesModalOpen] = React.useState(false);
+  const [isToolsModalOpen, setIsToolsModalOpen] = React.useState(false);
+
+  // Pestaña activa del tablero de control (tablero dividido)
+  const [dashTab, setDashTab] = React.useState<'indicadores' | 'tendencias' | 'operacion'>('indicadores');
 
   // Filtros internos de modales
   const [modalSearch, setModalSearch] = React.useState('');
@@ -50,6 +57,7 @@ export const HomeView: React.FC = () => {
       if (e.key === 'Escape') {
         setIsFormsModalOpen(false);
         setIsResourcesModalOpen(false);
+        setIsToolsModalOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -58,13 +66,20 @@ export const HomeView: React.FC = () => {
 
   // Prevenir scroll en body cuando un modal está abierto
   React.useEffect(() => {
-    if (isFormsModalOpen || isResourcesModalOpen) {
+    if (isFormsModalOpen || isResourcesModalOpen || isToolsModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
       setModalSearch('');
     }
-  }, [isFormsModalOpen, isResourcesModalOpen]);
+  }, [isFormsModalOpen, isResourcesModalOpen, isToolsModalOpen]);
+
+  // Abrir un popup cerrando los demás
+  const openModal = (which: 'forms' | 'resources' | 'tools'): void => {
+    setIsFormsModalOpen(which === 'forms');
+    setIsResourcesModalOpen(which === 'resources');
+    setIsToolsModalOpen(which === 'tools');
+  };
 
   // Lista de categorías únicas para recursos
   const resourceCategories = React.useMemo(() => {
@@ -228,10 +243,7 @@ export const HomeView: React.FC = () => {
             type="button"
             className={`${styles.quickLink} ${styles.quickLinkPopup}`}
             style={{ animationDelay: '0.52s', ...accent('#7cc4ad') }}
-            onClick={() => {
-              setIsFormsModalOpen(true);
-              setIsResourcesModalOpen(false);
-            }}
+            onClick={() => openModal('forms')}
             title="Abrir Formularios de Solicitudes"
             id="btn-popup-formularios"
           >
@@ -248,10 +260,7 @@ export const HomeView: React.FC = () => {
             type="button"
             className={`${styles.quickLink} ${styles.quickLinkPopup}`}
             style={{ animationDelay: '0.6s', ...accent('#4fb3d9') }}
-            onClick={() => {
-              setIsResourcesModalOpen(true);
-              setIsFormsModalOpen(false);
-            }}
+            onClick={() => openModal('resources')}
             title="Abrir Recursos de Uso Frecuente"
             id="btn-popup-recursos"
           >
@@ -261,6 +270,23 @@ export const HomeView: React.FC = () => {
               <span className={styles.popupIndicator}><ChevronDown16Regular /></span>
             </span>
             <span className={styles.qLabel}>Recursos Frecuentes</span>
+          </button>
+
+          {/* BOTÓN POPUP 3: HERRAMIENTAS Y DESCARGAS */}
+          <button
+            type="button"
+            className={`${styles.quickLink} ${styles.quickLinkPopup}`}
+            style={{ animationDelay: '0.68s', ...accent('#ef8b5a') }}
+            onClick={() => openModal('tools')}
+            title="Abrir Herramientas y Descargas"
+            id="btn-popup-herramientas"
+          >
+            <span className={styles.qIcon}>
+              <Toolbox24Regular />
+              <span className={styles.popupBadge}>{downloads.length}</span>
+              <span className={styles.popupIndicator}><ChevronDown16Regular /></span>
+            </span>
+            <span className={styles.qLabel}>Herramientas y Descargas</span>
           </button>
         </nav>
       </section>
@@ -446,8 +472,160 @@ export const HomeView: React.FC = () => {
         </div>
       )}
 
+      {/* 3b. MODAL POPUP: HERRAMIENTAS Y DESCARGAS */}
+      {isToolsModalOpen && (
+        <div
+          className={styles.modalOverlay}
+          onClick={e => {
+            if (e.target === e.currentTarget) setIsToolsModalOpen(false);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-tools-title"
+        >
+          <div className={styles.modalCard} style={{ maxWidth: '640px' }}>
+            <header className={styles.modalHeader}>
+              <div className={styles.modalHeaderLeft}>
+                <div className={styles.modalHeaderIcon} style={{ background: 'linear-gradient(135deg, #ef443b, #ef8b5a)' }}>
+                  <Toolbox24Regular />
+                </div>
+                <div>
+                  <h3 id="modal-tools-title" className={styles.modalHeaderTitle}>
+                    Herramientas y Descargas
+                    <span className={styles.modalHeaderBadge}>{downloads.length} apps</span>
+                  </h3>
+                  <p className={styles.modalHeaderSubtitle}>Instaladores oficiales recomendados por Soporte TI</p>
+                </div>
+              </div>
+              <button
+                className={styles.modalCloseBtn}
+                onClick={() => setIsToolsModalOpen(false)}
+                aria-label="Cerrar modal"
+              >
+                <Dismiss24Regular />
+              </button>
+            </header>
+
+            <div className={styles.modalBody}>
+              <div className={styles.toolsList}>
+                {downloads.map((d, i) => (
+                  <SmartLink
+                    key={d.label}
+                    id={`download-${i}`}
+                    url={d.url}
+                    newTab={d.newTab}
+                    title={`Descargar ${d.label}`}
+                    className={styles.toolItem}
+                    style={{ animationDelay: `${0.08 + i * 0.07}s`, ...accent(d.color) }}
+                  >
+                    <span className={styles.toolIcon}>{d.icon}</span>
+                    <span className={styles.toolInfo}>
+                      <strong>{d.label}</strong>
+                      <small>{d.desc}</small>
+                    </span>
+                    <span className={styles.toolBtn}>
+                      <ArrowDownload20Regular /> Descargar
+                    </span>
+                  </SmartLink>
+                ))}
+              </div>
+              <p className={styles.toolsHint}>
+                ¿Necesitas otra herramienta? Escríbenos a <strong>soporte@cies.org.bo</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PRIORIDAD: PLATAFORMAS PRINCIPALES + NUEVAS PÁGINAS (dividido en 2) */}
+      <section className={styles.priorityWrap}>
+        <div className={styles.prioritySplit}>
+          {/* Columna 1: Plataformas principales */}
+          <Reveal id="accesos" className={styles.platformsPanel}>
+            <span className={styles.panelGlow} />
+            <header className={styles.panelHeader}>
+              <div className={styles.panelHeaderLeft}>
+                <span className={styles.panelIcon}><Rocket24Regular /></span>
+                <div>
+                  <h2>Accesos a plataformas principales</h2>
+                  <p>Tus sistemas de trabajo diario, a un clic</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className={styles.panelAction}
+                onClick={() => openModal('resources')}
+                id="btn-ver-todas-plataformas"
+              >
+                <Grid24Regular /> Ver todas ({resources.length})
+              </button>
+            </header>
+
+            <div className={styles.platformGrid}>
+              {systems.map((s, i) => (
+                <SmartLink
+                  key={s.label}
+                  id={`platform-${i}`}
+                  url={s.url}
+                  newTab={s.newTab}
+                  title={s.label}
+                  className={styles.platformCard}
+                  style={{ animationDelay: `${0.25 + i * 0.07}s`, ...accent(s.color) }}
+                >
+                  <span className={styles.platformIcon}>{s.icon}</span>
+                  <span className={styles.platformInfo}>
+                    <strong>{s.label}</strong>
+                    <small>{s.desc}</small>
+                  </span>
+                  <span className={styles.platformGo}><ArrowRight16Regular /></span>
+                </SmartLink>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* Columna 2: Nuevas páginas e iniciativas */}
+          <Reveal id="iniciativas" className={styles.initiativesPanel} delay={0.12}>
+            <header className={styles.panelHeader}>
+              <div className={styles.panelHeaderLeft}>
+                <span className={`${styles.panelIcon} ${styles.panelIconAlt}`}><Sparkle24Regular /></span>
+                <div>
+                  <h2>Nuevas páginas e iniciativas</h2>
+                  <p>Lo más reciente en CIES</p>
+                </div>
+              </div>
+              <span className={styles.newBadge}>Nuevo</span>
+            </header>
+
+            <div className={styles.initiativesList}>
+              {newPages.map((p, i) => (
+                <SmartLink
+                  key={p.label}
+                  id={`initiative-${i}`}
+                  url={p.url}
+                  newTab={p.newTab}
+                  title={p.label}
+                  className={styles.initiativeCard}
+                  style={{ animationDelay: `${0.35 + i * 0.1}s` }}
+                >
+                  <span className={styles.initiativeCover} style={{ background: p.bg }}>
+                    {p.icon}
+                  </span>
+                  <span className={styles.initiativeBody}>
+                    <strong>{p.label}</strong>
+                    <small>{p.desc}</small>
+                    <span className={styles.initiativeMeta}>
+                      {p.url ? <>Explorar <ArrowRight16Regular /></> : 'Próximamente'}
+                    </span>
+                  </span>
+                </SmartLink>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* 4. DASHBOARD INSTITUCIONAL COMPLETO (DESPUÉS DEL BANNER) */}
-      <section className={styles.dashboardContainer} id="dashboard">
+      <Reveal as="section" className={styles.dashboardContainer} id="dashboard">
         {/* Controles de Dashboard */}
         <div className={styles.dashboardHeader}>
           <div className={styles.dashboardTitleArea}>
@@ -492,7 +670,7 @@ export const HomeView: React.FC = () => {
 
             <button
               className={styles.quickActionBtn}
-              onClick={() => setIsFormsModalOpen(true)}
+              onClick={() => openModal('forms')}
               style={{ borderColor: '#8cc63f', color: '#2f7a6b' }}
             >
               <DocumentBulletList24Regular /> Trámites ({forms.length})
@@ -500,8 +678,29 @@ export const HomeView: React.FC = () => {
           </div>
         </div>
 
+        {/* Pestañas: tablero dividido por vistas */}
+        <div className={styles.dashTabs} role="tablist">
+          {[
+            { key: 'indicadores' as const, label: 'Indicadores clave', icon: <Poll24Regular /> },
+            { key: 'tendencias' as const, label: 'Tendencias y distribución', icon: <DataTrending24Regular /> },
+            { key: 'operacion' as const, label: 'Regionales y actividad', icon: <Location24Regular /> }
+          ].map(t => (
+            <button
+              key={t.key}
+              id={`dash-tab-${t.key}`}
+              role="tab"
+              aria-selected={dashTab === t.key}
+              className={`${styles.dashTab} ${dashTab === t.key ? styles.dashTabActive : ''}`}
+              onClick={() => setDashTab(t.key)}
+            >
+              {t.icon} {t.label}
+            </button>
+          ))}
+        </div>
+
         {/* Fila de Tarjetas KPI */}
-        <div className={styles.kpiGrid}>
+        {dashTab === 'indicadores' && (
+        <div className={`${styles.kpiGrid} ${styles.tabPanel}`} key="tab-indicadores">
           {dashboardKpis.map((kpi: IKpiStat, index: number) => (
             <div
               key={kpi.id}
@@ -531,9 +730,11 @@ export const HomeView: React.FC = () => {
             </div>
           ))}
         </div>
+        )}
 
         {/* Fila de Gráficas de Datos */}
-        <div className={styles.chartsRow}>
+        {dashTab === 'tendencias' && (
+        <div className={`${styles.chartsRow} ${styles.tabPanel}`} key="tab-tendencias">
           {/* Gráfica 1: Área / Línea de Atenciones y Trámites */}
           <div className={styles.chartCard}>
             <div className={styles.chartHeader}>
@@ -712,9 +913,11 @@ export const HomeView: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
 
         {/* Fila de Rendimiento Regional y Actividad Reciente */}
-        <div className={styles.detailsRow}>
+        {dashTab === 'operacion' && (
+        <div className={`${styles.detailsRow} ${styles.tabPanel}`} key="tab-operacion">
           {/* Rendimiento por Regional CIES */}
           <div className={styles.chartCard}>
             <div className={styles.chartHeader}>
@@ -770,101 +973,8 @@ export const HomeView: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* 5. SISTEMAS PRINCIPALES INSTITUCIONALES (FRANJA MODERNA) */}
-      <section id="sistemas" className={styles.systemsBand}>
-        <div className={styles.containerInner}>
-          <header className={styles.sectionHeader}>
-            <span className={styles.sectionIcon}><Database24Regular /></span>
-            <div>
-              <h2>Accesos a Plataformas Principales</h2>
-              <p>Conexión directa a los sistemas clave de operación institucional</p>
-            </div>
-          </header>
-
-          <div className={styles.systemsGrid}>
-            {systems.map((s, i) => (
-              <SmartLink
-                key={s.label}
-                url={s.url}
-                newTab={s.newTab}
-                title={s.label}
-                className={styles.system}
-                style={{ animationDelay: `${i * 0.08}s`, ...accent(s.color) }}
-              >
-                <div className={styles.systemTopRow}>
-                  <span className={styles.systemIcon}>{s.icon}</span>
-                  <span className={styles.systemUptimeTag}>99.9% Uptime</span>
-                </div>
-                <strong>{s.label}</strong>
-                <small>{s.desc}</small>
-                <span className={styles.systemGo}>Ingresar <ArrowRight16Regular /></span>
-              </SmartLink>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. NUEVAS PÁGINAS + DESCARGAS */}
-      <section className={`${styles.container} ${styles.twoCol}`}>
-        <div>
-          <header className={styles.sectionHeader}>
-            <span className={styles.sectionIcon}><Open16Regular /></span>
-            <div>
-              <h2>Nuevas Páginas e Iniciativas</h2>
-              <p>Proyectos de bienestar y tecnología de vanguardia</p>
-            </div>
-          </header>
-          <div className={styles.pagesGrid}>
-            {newPages.map((p, i) => (
-              <SmartLink
-                key={p.label}
-                url={p.url}
-                newTab={p.newTab}
-                title={p.label}
-                className={styles.pageCard}
-                style={{ animationDelay: `${i * 0.12}s` }}
-              >
-                <div className={styles.pageCover} style={{ background: p.bg }}>{p.icon}</div>
-                <div className={styles.pageBody}>
-                  <strong>{p.label}</strong>
-                  <small>{p.desc}</small>
-                </div>
-              </SmartLink>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <header className={styles.sectionHeader}>
-            <span className={styles.sectionIcon}><ArrowDownload20Regular /></span>
-            <div>
-              <h2>Herramientas y Descargas</h2>
-              <p>Aplicaciones para soporte y conectividad</p>
-            </div>
-          </header>
-          <div className={styles.downloads}>
-            {downloads.map(d => (
-              <SmartLink
-                key={d.label}
-                url={d.url}
-                newTab={d.newTab}
-                title={d.label}
-                className={styles.download}
-                style={accent(d.color)}
-              >
-                <span className={styles.downloadIcon}>{d.icon}</span>
-                <div>
-                  <strong>{d.label}</strong>
-                  <small>{d.desc}</small>
-                </div>
-                <ArrowDownload20Regular className={styles.downloadArrow} />
-              </SmartLink>
-            ))}
-          </div>
-        </div>
-      </section>
+        )}
+      </Reveal>
 
       {/* 7. FOOTER INSTITUCIONAL */}
       <footer className={styles.footer}>
