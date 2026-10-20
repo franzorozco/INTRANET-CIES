@@ -192,7 +192,7 @@ export const systemsStatusList: ISystemStatus[] = [
   { name: 'MEDICARE', role: 'Gestión Clínica & Historias', uptime: '99.9%', status: 'online', url: 'https://medicare.cies.org.bo/', color: '#2f9e44' },
   { name: 'COMPARTIDA.CIES', role: 'Repositorio Documental SharePoint', uptime: '100%', status: 'online', url: 'https://ciesbo.sharepoint.com/sites/compartidacies', color: '#0078d4' },
   { name: 'SALAR RRHH', role: 'Planillas & Talento Humano', uptime: '99.8%', status: 'online', url: 'https://cies.salar11.net/ingresar.aspx', color: '#1c3f94' },
-  { name: 'SGD', role: 'Sistema Gestión Documental', uptime: '99.7%', status: 'online', url: 'http://sgd.cies.org.bo/', color: '#8cc63f' },
-  { name: 'BIOFILE', role: 'Control Asistencia Biométrico', uptime: '99.9%', status: 'online', url: 'https://ong.biofile.com.co/', color: '#1fa2d6' },
+  // { name: 'SGD', role: 'Sistema Gestión Documental', uptime: '99.7%', status: 'online', url: 'http://sgd.cies.org.bo/', color: '#8cc63f' },
+  // { name: 'BIOFILE', role: 'Control Asistencia Biométrico', uptime: '99.9%', status: 'online', url: 'https://ong.biofile.com.co/', color: '#1fa2d6' },
   { name: 'SEGURO ESTAR BIEN', role: 'Plataforma Alianza Seguros', uptime: '100%', status: 'online', url: 'https://www.alianza.com.bo/SingleUserR2/Home', color: '#004a98' }
 ];

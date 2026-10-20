@@ -1,5 +1,7 @@
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/site-groups/web";
 import type { ISiteUserInfo } from "@pnp/sp/site-users/types";
@@ -178,4 +180,73 @@ export const addUserToGroup = async (groupName: string, email: string): Promise<
 export const removeUserFromGroup = async (groupName: string, userId: number): Promise<void> => {
   const sp = getSP();
   await sp.web.siteGroups.getByName(groupName).users.removeById(userId);
+};
+
+export interface INovedad {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  imageUrl?: string;
+  linkUrl?: string;
+  category?: string;
+  important?: boolean;
+}
+
+/**
+ * Obtiene las novedades directamente desde la lista de SharePoint "Novedades" o "Noticias".
+ * Si la lista no existe en el sitio, intenta crearla o consulta las alternativas para no fallar.
+ */
+export const getNovedadesSharePoint = async (context?: WebPartContext): Promise<INovedad[]> => {
+  try {
+    const sp = getSP(context);
+
+    // Intentar buscar lista "Novedades" o "Noticias"
+    const listNames = ['Novedades', 'Noticias'];
+    let items: any[] = [];
+
+    for (const name of listNames) {
+      try {
+        items = await sp.web.lists.getByTitle(name).items
+          .select('Id', 'Title', 'Created', 'Modified', 'Description', 'Descripcion', 'Imagen', 'ImageUrl', 'Enlace', 'LinkUrl', 'Categoria', 'Category', 'Importante', 'Important')
+          .top(6)
+          .orderBy('Created', false)();
+
+        if (items && items.length > 0) {
+          break;
+        }
+      } catch (e) {
+        // La lista no existe aún con este nombre, probamos la siguiente
+      }
+    }
+
+    if (items && items.length > 0) {
+      return items.map((it: any) => {
+        // Manejar posibles nombres de columnas en español o inglés
+        const desc = it.Descripcion || it.Description || '';
+        const img = typeof it.Imagen === 'object' ? it.Imagen?.Url : (it.Imagen || it.ImageUrl || '');
+        const link = typeof it.Enlace === 'object' ? it.Enlace?.Url : (it.Enlace || it.LinkUrl || '');
+        const cat = it.Categoria || it.Category || 'Institucional';
+        const imp = Boolean(it.Importante || it.Important);
+        const createdDate = it.Created ? new Date(it.Created).toLocaleDateString('es-BO', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Reciente';
+
+        return {
+          id: it.Id,
+          title: it.Title || 'Novedad institucional',
+          description: desc,
+          date: createdDate,
+          imageUrl: img,
+          linkUrl: link,
+          category: cat,
+          important: imp
+        };
+      });
+    }
+
+    // Si aún no hay elementos en la lista, retornar array vacío
+    return [];
+  } catch (err) {
+    console.warn('Aviso al consultar novedades de SharePoint:', err);
+    return [];
+  }
 };

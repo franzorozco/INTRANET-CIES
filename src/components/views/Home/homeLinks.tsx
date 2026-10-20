@@ -8,7 +8,8 @@ import {
   Cloud24Regular, Database24Regular, Organization24Regular, Chat24Regular, QrCode24Regular,
   Clock24Regular, ReceiptMoney24Regular, Call24Regular, ShieldCheckmark24Regular,
   Desktop24Regular, PeopleTeam24Regular, Emoji24Regular, Bot24Regular,
-  ShieldTask24Regular, Fingerprint24Regular, PeopleCommunity24Regular, Folder24Regular
+  ShieldTask24Regular, Fingerprint24Regular, PeopleCommunity24Regular, Folder24Regular,
+  HatGraduation24Regular
 } from '@fluentui/react-icons';
 
 /**
@@ -125,20 +126,20 @@ export const resources: ILinkItem[] = [
   { label: 'Soporte TI', desc: 'Mesa de ayuda directa', icon: <PersonSupport24Regular />, category: 'Sistemas & TI', url: 'http://soporteti.cies.org.bo/' }
 ];
 
-/** Franja "Accesos a sistemas" */
 export const systems: ILinkItem[] = [
   { label: 'MEDICARE', desc: 'Gestión clínica & pacientes', icon: <HeartPulse24Regular />, color: '#2f9e44', url: 'https://medicare.cies.org.bo/' },
   { label: 'COMPARTIDA.CIES', desc: 'Documentos compartidos', icon: <Folder24Regular />, color: '#0078d4', url: 'https://ciesbo.sharepoint.com/sites/compartidacies' },
   { label: 'SALAR RRHH', desc: 'Talento humano & planillas', icon: <PeopleCommunity24Regular />, color: '#1c3f94', url: 'https://cies.salar11.net/ingresar.aspx' },
-  { label: 'SGD', desc: 'Gestión documental institucional', icon: <DocumentFolder24Regular />, color: '#8cc63f', url: 'http://sgd.cies.org.bo/' },
-  { label: 'BIOFILE', desc: 'Control biométrico nacional', icon: <Fingerprint24Regular />, color: '#1fa2d6', url: 'https://ong.biofile.com.co/' },
   { label: 'SEGURO ESTAR BIEN', desc: 'Alianza seguros de salud', icon: <ShieldTask24Regular />, color: '#004a98', url: 'https://www.alianza.com.bo/SingleUserR2/Home' }
+  // { label: 'SGD CIES', desc: 'Gestión documental institucional', icon: <DocumentFolder24Regular />, color: '#8cc63f', url: 'http://sgd.cies.org.bo/' },
+  // { label: 'BIOFILE', desc: 'Control biométrico nacional', icon: <Fingerprint24Regular />, color: '#1fa2d6', url: 'https://ong.biofile.com.co/' }
 ];
 
 /** Nuevas páginas */
 export const newPages: ILinkItem[] = [
   { label: 'Proyecto Salud Mental CIES', desc: 'Bienestar emocional para nuestro equipo', icon: <Emoji24Regular />, bg: 'linear-gradient(135deg,#6a4c93,#ff6f91)', url: '' },
-  { label: 'Agentes AI CIES Copilot', desc: 'Inteligencia artificial al servicio del trabajo', icon: <Bot24Regular />, bg: 'linear-gradient(135deg,#0f2a3a,#4fb3d9)', url: '' }
+  { label: 'Agentes AI CIES Copilot', desc: 'Inteligencia artificial al servicio del trabajo', icon: <Bot24Regular />, bg: 'linear-gradient(135deg,#0f2a3a,#4fb3d9)', url: '' },
+  { label: 'Capacitaciones', desc: 'Cursos de IA, Copilot Studio y herramientas digitales', icon: <HatGraduation24Regular />, bg: 'linear-gradient(135deg,#1a5c68,#00bcd4)', url: '/capacitaciones', newTab: false }
 ];
 
 /** Descargas */

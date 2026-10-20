@@ -6,7 +6,8 @@ import {
   Apps24Regular, HeartPulse24Regular, Cloud24Regular, Poll24Regular,
   ArrowSync20Regular, ArrowTrending20Regular, ChevronDown16Regular,
   Toolbox24Regular, Sparkle24Regular, Rocket24Regular, Grid24Regular,
-  DataTrending24Regular, Location24Regular, CalendarLtr24Regular
+  DataTrending24Regular, Location24Regular, CalendarLtr24Regular,
+  PersonSupport24Regular, News24Regular, Tag16Regular
 } from '@fluentui/react-icons';
 import type { WebPartContext } from '@microsoft/sp-webpart-base';
 import styles from './HomeView.module.scss';
@@ -21,6 +22,7 @@ import {
   dashboardKpis, monthlyTrends, requestDistribution, regionalStats,
   recentActivities, IKpiStat
 } from './dashboardData';
+import { getNovedadesSharePoint, INovedad } from '../../../services/spService';
 
 const accent = (color?: string): React.CSSProperties =>
   (color ? { ['--accent' as string]: color } : {}) as React.CSSProperties;
@@ -57,6 +59,26 @@ export const HomeView: React.FC<IHomeViewProps> = ({ context }) => {
     const timeStr = now.toLocaleTimeString('es-BO', { hour: '2-digit', minute: '2-digit' });
     setSyncTime(`Hoy a las ${timeStr}`);
   };
+
+  // Novedades de SharePoint
+  const [novedades, setNovedades] = React.useState<INovedad[]>([]);
+  const [isLoadingNovedades, setIsLoadingNovedades] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    void getNovedadesSharePoint(context)
+      .then((items: INovedad[]) => {
+        if (isMounted) {
+          setNovedades(items);
+          setIsLoadingNovedades(false);
+        }
+      })
+      .catch((err: unknown) => {
+        console.warn('Error al cargar novedades:', err);
+        if (isMounted) setIsLoadingNovedades(false);
+      });
+    return () => { isMounted = false; };
+  }, [context]);
 
   // Manejar teclado para cerrar modales con ESC
   React.useEffect(() => {
@@ -587,6 +609,76 @@ export const HomeView: React.FC<IHomeViewProps> = ({ context }) => {
                   <span className={styles.platformGo}><ArrowRight16Regular /></span>
                 </SmartLink>
               ))}
+            </div>
+
+            {/* SECCIÓN NOVEDADES DESDE SHAREPOINT */}
+            <div className={styles.novedadesSection}>
+              <div className={styles.novedadesHeader}>
+                <div className={styles.novedadesHeaderTitle}>
+                  <News24Regular className={styles.novedadesIcon} />
+                  <div>
+                    <h3>Novedades & Noticias Institucionales</h3>
+                    <p>Actualizaciones oficiales desde SharePoint</p>
+                  </div>
+                </div>
+                <span className={styles.novedadesLivePill}>
+                  <span className={styles.novedadesLiveDot} /> En vivo
+                </span>
+              </div>
+
+              {isLoadingNovedades ? (
+                <div className={styles.novedadesSkeletonList}>
+                  <div className={styles.novedadesSkeletonItem} />
+                  <div className={styles.novedadesSkeletonItem} />
+                </div>
+              ) : novedades.length > 0 ? (
+                <div className={styles.novedadesGrid}>
+                  {novedades.map((nov) => (
+                    <a
+                      key={nov.id}
+                      href={nov.linkUrl || '#'}
+                      target={nov.linkUrl ? '_blank' : undefined}
+                      rel="noopener noreferrer"
+                      className={styles.novedadCard}
+                      onClick={(e) => {
+                        if (!nov.linkUrl) e.preventDefault();
+                      }}
+                    >
+                      {nov.imageUrl ? (
+                        <div className={styles.novedadThumb}>
+                          <img src={nov.imageUrl} alt={nov.title} />
+                        </div>
+                      ) : (
+                        <div className={styles.novedadThumbPlaceholder}>
+                          <News24Regular />
+                        </div>
+                      )}
+                      <div className={styles.novedadContent}>
+                        <div className={styles.novedadMetaRow}>
+                          <span className={styles.novedadCategory}>{nov.category}</span>
+                          <span className={styles.novedadDate}>{nov.date}</span>
+                        </div>
+                        <h4 className={styles.novedadTitle}>{nov.title}</h4>
+                        {nov.description && (
+                          <p className={styles.novedadDesc}>{nov.description}</p>
+                        )}
+                        {nov.linkUrl && (
+                          <span className={styles.novedadLink}>
+                            Leer noticia <Open16Regular />
+                          </span>
+                        )}
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.novedadesEmptyState}>
+                  <News24Regular className={styles.emptyIcon} />
+                  <p>
+                    Las novedades institucionales se cargan automáticamente desde la lista <strong>"Novedades"</strong> o <strong>"Noticias"</strong> de SharePoint.
+                  </p>
+                </div>
+              )}
             </div>
           </Reveal>
 

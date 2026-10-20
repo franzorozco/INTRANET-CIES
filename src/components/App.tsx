@@ -18,6 +18,7 @@ import { Header } from './layout/Header';
 import { HomeView } from './views/Home/HomeView';
 import { ProfileView } from './views/Profile/ProfileView';
 import { AdminView } from './views/Admin/AdminView';
+import { CapacitacionesView } from './views/Capacitaciones/CapacitacionesView';
 
 export interface IAppProps {
   context?: WebPartContext;
@@ -122,6 +123,10 @@ export const App: React.FC<IAppProps> = ({ context }) => {
                         <AdminView />
                       </ProtectedRoute>
                   }
+                />
+                <Route
+                  path="/capacitaciones"
+                  element={<CapacitacionesView />}
                 />
                 {/* Cualquier otra ruta o hash residual redirige inmediatamente a la página principal */}
                 <Route path="*" element={<Navigate to="/" replace />} />

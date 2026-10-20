@@ -1,0 +1,1190 @@
+@charset "UTF-8";
+
+// Variables & Colores de Marca CIES y Temática AI
+$primary-teal: #1a5c68;
+$dark-slate: #0b1e2c;
+$accent-cyan: #00bcd4;
+$accent-blue: #0078d4;
+$accent-lime: #8cc63f;
+$accent-purple: #7b2cbf;
+$bg-light: #f4f7f9;
+$card-bg: #ffffff;
+$border-color: #e2e8f0;
+$text-main: #1e293b;
+$text-muted: #64748b;
+
+.capacitacionesContainer {
+  min-height: 100vh;
+  background-color: $bg-light;
+  padding: 0 0 60px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: $text-main;
+}
+
+// Migas de pan
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-size: 13.5px;
+  background: #ffffff;
+  border-bottom: 1px solid #edf2f7;
+
+  .breadcrumbLink {
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    &:hover {
+      color: $accent-blue;
+    }
+  }
+
+  .breadcrumbSeparator {
+    color: #a0aec0;
+    font-size: 14px;
+  }
+
+  .breadcrumbActive {
+    color: $primary-teal;
+    font-weight: 700;
+  }
+}
+
+// Hero Banner
+.heroBanner {
+  position: relative;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  padding: 48px 36px;
+  margin: 20px 32px 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(11, 30, 44, 0.16);
+
+  .heroBackground {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    .heroImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.65) saturate(1.2);
+      transform: scale(1.02);
+      transition: transform 10s ease;
+    }
+
+    .heroOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(11, 30, 44, 0.9) 0%, rgba(26, 92, 104, 0.75) 50%, rgba(0, 188, 212, 0.35) 100%);
+      backdrop-filter: blur(2px);
+    }
+  }
+
+  &:hover .heroImg {
+    transform: scale(1.06);
+  }
+
+  .heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    color: #ffffff;
+  }
+
+  .heroTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #bbf7d0;
+    margin-bottom: 16px;
+    animation: fadeInDown 0.6s ease forwards;
+  }
+
+  .heroTitle {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.7s ease forwards;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
+  }
+
+  .heroSubtitle {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #e2e8f0;
+    margin: 0 0 24px;
+    max-width: 720px;
+    font-weight: 400;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.8s ease forwards;
+  }
+
+  .heroStats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 12px;
+
+    .statItem {
+      display: flex;
+      flex-direction: column;
+
+      strong {
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      span {
+        font-size: 12px;
+        color: #cbd5e1;
+      }
+    }
+
+    .statDivider {
+      width: 1px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.25);
+    }
+  }
+}
+
+// Filtros y Búsqueda
+.filterBar {
+  max-width: 1280px;
+  margin: 0 auto 28px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  .categoryPills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .pillBtn {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #475569;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+        transform: translateY(-1px);
+      }
+
+      &.pillActive {
+        background: $primary-teal;
+        border-color: $primary-teal;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(26, 92, 104, 0.25);
+      }
+    }
+  }
+
+  .searchBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 290px;
+
+    .searchIcon {
+      position: absolute;
+      left: 14px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .searchInput {
+      width: 100%;
+      padding: 9px 38px 9px 40px;
+      font-size: 13.5px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      outline: none;
+      transition: all 0.2s;
+
+      &:focus {
+        border-color: $accent-blue;
+        box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.15);
+      }
+    }
+
+    .clearSearchBtn {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+
+      &:hover {
+        color: #334155;
+      }
+    }
+  }
+}
+
+// Cursos Grid
+.coursesGrid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+// Tarjeta Individual de Curso (Estilo Card Dividida)
+.courseCard {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: stretch;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid $border-color;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15, 30, 45, 0.09);
+    border-color: #cbd5e1;
+  }
+
+  &.rowReversed {
+    grid-template-columns: 1.15fr 1fr;
+  }
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+// Columna de Información
+.infoCol {
+  padding: 38px 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 24px;
+  }
+
+  .categoryBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 12px;
+
+    .categoryDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $accent-cyan;
+    }
+  }
+
+  .courseTitle {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.25;
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .courseParagraph {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #475569;
+    margin: 0 0 14px;
+  }
+
+  .courseTextList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: #475569;
+
+      strong {
+        color: #0f172a;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .cardActions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+
+    .primaryBtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: $primary-teal;
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(26, 92, 104, 0.2);
+
+      &:hover {
+        background: #13464f;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(26, 92, 104, 0.32);
+      }
+
+      &.nvidiaBtn {
+        background: #1a1a1a;
+        &:hover {
+          background: #76b900;
+          color: #000000;
+          box-shadow: 0 6px 20px rgba(118, 185, 0, 0.35);
+        }
+      }
+    }
+
+    .durationTag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .certificatePill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #2e7d32;
+      background: #e8f5e9;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+  }
+}
+
+// Chips de Agentes IA
+.agentsChipsGrid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0 16px;
+
+  .agentChip {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 8px;
+    cursor: default;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #e0f2fe;
+      border-color: #38bdf8;
+      color: #0369a1;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Iconos de Apps M365
+.appIconsRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 14px 0 20px;
+
+  .appPill {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// Columna de Imagen / Arte
+.imageCol {
+  position: relative;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 280px;
+
+  .imageWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .courseImg {
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    &:hover .courseImg {
+      transform: scale(1.04);
+    }
+
+    .badgeOverImage {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(11, 30, 44, 0.85);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .copilotBadge {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      display: grid;
+      place-items: center;
+      color: #0078d4;
+      font-size: 24px;
+    }
+  }
+}
+
+// Reproductor de Video Simulado (Reunión Grabada Teams)
+.videoThumbnailWrapper {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  background: linear-gradient(135deg, #0b1329 0%, #172554 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .videoSimulatedScreen {
+    width: 100%;
+    background: #020617;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+    transition: transform 0.3s;
+  }
+
+  &:hover .videoSimulatedScreen {
+    transform: scale(1.02);
+  }
+
+  .videoTopBar {
+    background: #0f172a;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .videoDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #475569;
+    }
+
+    .videoTitleBar {
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+  }
+
+  .videoContentPreview {
+    position: relative;
+    padding: 24px;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .meetingGrid {
+      position: absolute;
+      inset: 8px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      opacity: 0.3;
+
+      .speakerTile {
+        background: #1e293b;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        font-size: 11px;
+      }
+      .attendeeTile {
+        background: #131c2e;
+        border-radius: 6px;
+      }
+    }
+
+    .playButtonOverlay {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+
+      .playIconPulse {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: #0078d4;
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        font-size: 34px;
+        box-shadow: 0 0 0 0 rgba(0, 120, 212, 0.7);
+        animation: pulseEffect 2s infinite;
+      }
+
+      .playLabel {
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 4px 12px;
+        border-radius: 999px;
+      }
+    }
+  }
+}
+
+// Arte Microsoft 365 Copilot
+.m365CardArt {
+  width: 100%;
+  height: 100%;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 50%, #fce7f3 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+
+  .copilot3DIcon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #0078d4 0%, #8764b8 50%, #f25022 100%);
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+    font-size: 36px;
+    box-shadow: 0 12px 28px rgba(0, 120, 212, 0.35);
+    margin-bottom: 20px;
+
+    .symbolIcon {
+      font-size: 40px;
+    }
+  }
+
+  .m365AppsFloating {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    .floatingBadge {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s;
+
+      &:hover {
+        transform: translateY(-3px) scale(1.1);
+      }
+    }
+  }
+
+  .m365ArtTitle {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 6px;
+  }
+
+  .m365ArtSubtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+  }
+}
+
+// Arte Copilot Studio
+.copilotStudioVisual {
+  width: 100%;
+  height: 100%;
+  padding: 40px 24px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .studioIconBox {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
+    display: grid;
+    place-items: center;
+
+    .studioSquare1, .studioSquare2, .studioSquare3, .studioSquare4 {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      transition: all 0.4s ease;
+    }
+
+    .studioSquare1 { top: 6px; left: 6px; background: #0078d4; }
+    .studioSquare2 { top: 6px; right: 6px; background: #2f9e44; }
+    .studioSquare3 { bottom: 6px; left: 6px; background: #ff9800; }
+    .studioSquare4 { bottom: 6px; right: 6px; background: #6a4c93; }
+
+    .studioCenterIcon {
+      position: relative;
+      z-index: 2;
+      font-size: 34px;
+      color: #ffffff;
+    }
+  }
+
+  &:hover .studioIconBox {
+    .studioSquare1 { transform: translate(-4px, -4px); }
+    .studioSquare2 { transform: translate(4px, -4px); }
+    .studioSquare3 { transform: translate(-4px, 4px); }
+    .studioSquare4 { transform: translate(4px, 4px); }
+  }
+
+  .studioTitleVisual {
+    font-size: 26px;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0 0 4px;
+    letter-spacing: -0.02em;
+  }
+
+  .studioSubVisual {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0284c7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Barra de Comunidad (Me Gusta, Compartir, Vistas)
+.communityBar {
+  max-width: 1280px;
+  margin: 40px auto 24px;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .reactionButtons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    .reactionBtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #475569;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+
+      &:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+      }
+
+      &.reactionBtnActive {
+        color: #e0245e;
+        background: #ffe4e6;
+      }
+
+      &.reactionBtnBookmarked {
+        color: #d97706;
+        background: #fef3c7;
+      }
+    }
+
+    .viewsTag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #64748b;
+      padding-left: 8px;
+      border-left: 1px solid #e2e8f0;
+    }
+  }
+
+  .shareBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+  }
+}
+
+// Sección de Comentarios
+.commentsSection {
+  max-width: 1280px;
+  margin: 0 auto 40px;
+  padding: 0 32px;
+
+  .commentsHeading {
+    font-size: 19px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 20px;
+  }
+
+  .commentForm {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 28px;
+
+    .userAvatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: $primary-teal;
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .inputWrap {
+      flex: 1;
+      display: flex;
+      gap: 10px;
+
+      .commentInput {
+        flex: 1;
+        padding: 10px 16px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        outline: none;
+        transition: all 0.2s;
+
+        &:focus {
+          border-color: $accent-blue;
+          box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.15);
+        }
+      }
+
+      .submitCommentBtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: $primary-teal;
+        color: #ffffff;
+        border: none;
+        padding: 0 18px;
+        border-radius: 10px;
+        font-size: 13.5px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover:not(:disabled) {
+          background: #13464f;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .commentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .commentItem {
+      display: flex;
+      gap: 14px;
+      background: #ffffff;
+      padding: 18px 20px;
+      border-radius: 14px;
+      border: 1px solid #edf2f7;
+
+      .commentAvatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #64748b;
+        color: #ffffff;
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .commentBody {
+        flex: 1;
+
+        .commentHeader {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 6px;
+
+          .commentAuthor {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+          }
+
+          .commentRole {
+            font-size: 12px;
+            color: #64748b;
+          }
+
+          .commentTime {
+            font-size: 12px;
+            color: #94a3b8;
+          }
+        }
+
+        .commentText {
+          font-size: 14px;
+          line-height: 1.5;
+          color: #334155;
+          margin: 0 0 10px;
+        }
+
+        .commentActions {
+          display: flex;
+          gap: 14px;
+
+          button {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+
+            &:hover {
+              color: #0f172a;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Footer
+.capacitacionesFooter {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 24px 32px;
+  text-align: center;
+
+  .footerLinks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+
+    a {
+      font-size: 12.5px;
+      color: #64748b;
+      text-decoration: none;
+
+      &:hover {
+        color: $primary-teal;
+        text-decoration: underline;
+      }
+    }
+
+    .footerDot {
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+  }
+
+  .footerCopyright {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+  }
+}
+
+// Modal Video
+.videoModalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 20, 32, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.videoModalContent {
+  width: 100%;
+  max-width: 900px;
+  background: #0f172a;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    .modalHeaderTitle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+
+      h3 {
+        font-size: 16px;
+        margin: 0;
+        font-weight: 700;
+      }
+    }
+
+    .closeModalBtn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 20px;
+      display: grid;
+      place-items: center;
+      padding: 4px;
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+  }
+
+  .modalVideoPlayerArea {
+    padding: 16px;
+    background: #020617;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .iframeResponsiveContainer {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: #000000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+      .iframeVideoPlayer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    }
+  }
+}
+
+// Animaciones Clave
+@keyframes pulseEffect {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 120, 212, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(0, 120, 212, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 120, 212, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
